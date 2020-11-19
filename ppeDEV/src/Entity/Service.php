@@ -29,9 +29,15 @@ class Service
      */
     private $hospitalRooms;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Staff::class, mappedBy="idService")
+     */
+    private $staff;
+
     public function __construct()
     {
         $this->hospitalRooms = new ArrayCollection();
+        $this->staff = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +81,36 @@ class Service
             // set the owning side to null (unless already changed)
             if ($hospitalRoom->getIdService() === $this) {
                 $hospitalRoom->setIdService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Staff[]
+     */
+    public function getStaff(): Collection
+    {
+        return $this->staff;
+    }
+
+    public function addStaff(Staff $staff): self
+    {
+        if (!$this->staff->contains($staff)) {
+            $this->staff[] = $staff;
+            $staff->setIdService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStaff(Staff $staff): self
+    {
+        if ($this->staff->removeElement($staff)) {
+            // set the owning side to null (unless already changed)
+            if ($staff->getIdService() === $this) {
+                $staff->setIdService(null);
             }
         }
 
