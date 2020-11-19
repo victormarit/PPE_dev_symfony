@@ -49,9 +49,15 @@ class Patient
      */
     private $stays;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Manage::class, mappedBy="idPatient", orphanRemoval=true)
+     */
+    private $manages;
+
     public function __construct()
     {
         $this->stays = new ArrayCollection();
+        $this->manages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +149,36 @@ class Patient
             // set the owning side to null (unless already changed)
             if ($stay->getIdPatient() === $this) {
                 $stay->setIdPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Manage[]
+     */
+    public function getManages(): Collection
+    {
+        return $this->manages;
+    }
+
+    public function addManage(Manage $manage): self
+    {
+        if (!$this->manages->contains($manage)) {
+            $this->manages[] = $manage;
+            $manage->setIdPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManage(Manage $manage): self
+    {
+        if ($this->manages->removeElement($manage)) {
+            // set the owning side to null (unless already changed)
+            if ($manage->getIdPatient() === $this) {
+                $manage->setIdPatient(null);
             }
         }
 

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StaffRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,6 +50,22 @@ class Staff
      * @ORM\JoinColumn(nullable=false)
      */
     private $idRole;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Manage::class, mappedBy="idStaff", orphanRemoval=true)
+     */
+    private $manages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AddStay::class, mappedBy="idStaff", orphanRemoval=true)
+     */
+    private $addStays;
+
+    public function __construct()
+    {
+        $this->manages = new ArrayCollection();
+        $this->addStays = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,6 +140,66 @@ class Staff
     public function setIdRole(?Role $idRole): self
     {
         $this->idRole = $idRole;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Manage[]
+     */
+    public function getManages(): Collection
+    {
+        return $this->manages;
+    }
+
+    public function addManage(Manage $manage): self
+    {
+        if (!$this->manages->contains($manage)) {
+            $this->manages[] = $manage;
+            $manage->setIdStaff($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManage(Manage $manage): self
+    {
+        if ($this->manages->removeElement($manage)) {
+            // set the owning side to null (unless already changed)
+            if ($manage->getIdStaff() === $this) {
+                $manage->setIdStaff(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AddStay[]
+     */
+    public function getAddStays(): Collection
+    {
+        return $this->addStays;
+    }
+
+    public function addAddStay(AddStay $addStay): self
+    {
+        if (!$this->addStays->contains($addStay)) {
+            $this->addStays[] = $addStay;
+            $addStay->setIdStaff($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddStay(AddStay $addStay): self
+    {
+        if ($this->addStays->removeElement($addStay)) {
+            // set the owning side to null (unless already changed)
+            if ($addStay->getIdStaff() === $this) {
+                $addStay->setIdStaff(null);
+            }
+        }
 
         return $this;
     }

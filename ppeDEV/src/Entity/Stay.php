@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StayRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +45,16 @@ class Stay
      * @ORM\JoinColumn(nullable=false)
      */
     private $idPatient;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AddStay::class, mappedBy="idStay", orphanRemoval=true)
+     */
+    private $addStays;
+
+    public function __construct()
+    {
+        $this->addStays = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +117,36 @@ class Stay
     public function setIdPatient(?Patient $idPatient): self
     {
         $this->idPatient = $idPatient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AddStay[]
+     */
+    public function getAddStays(): Collection
+    {
+        return $this->addStays;
+    }
+
+    public function addAddStay(AddStay $addStay): self
+    {
+        if (!$this->addStays->contains($addStay)) {
+            $this->addStays[] = $addStay;
+            $addStay->setIdStay($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddStay(AddStay $addStay): self
+    {
+        if ($this->addStays->removeElement($addStay)) {
+            // set the owning side to null (unless already changed)
+            if ($addStay->getIdStay() === $this) {
+                $addStay->setIdStay(null);
+            }
+        }
 
         return $this;
     }
