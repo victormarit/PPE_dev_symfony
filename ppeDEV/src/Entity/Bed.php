@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BedRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,16 @@ class Bed
      * @ORM\JoinColumn(nullable=false)
      */
     private $idHospitalRoom;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Stay::class, mappedBy="idBed")
+     */
+    private $stays;
+
+    public function __construct()
+    {
+        $this->stays = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -53,6 +65,36 @@ class Bed
     public function setIdHospitalRoom(?HospitalRoom $idHospitalRoom): self
     {
         $this->idHospitalRoom = $idHospitalRoom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stay[]
+     */
+    public function getStays(): Collection
+    {
+        return $this->stays;
+    }
+
+    public function addStay(Stay $stay): self
+    {
+        if (!$this->stays->contains($stay)) {
+            $this->stays[] = $stay;
+            $stay->setIdBed($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStay(Stay $stay): self
+    {
+        if ($this->stays->removeElement($stay)) {
+            // set the owning side to null (unless already changed)
+            if ($stay->getIdBed() === $this) {
+                $stay->setIdBed(null);
+            }
+        }
 
         return $this;
     }
