@@ -3,14 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\StaffRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=StaffRepository::class)
  */
-class Staff
+class Staff implements UserInterface
 {
     /**
      * @ORM\Id
@@ -20,9 +19,20 @@ class Staff
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $lastName;
+    private $login;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -32,68 +42,11 @@ class Staff
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $login;
-
-    /**
-     * @ORM\Column(type="string", length=500)
-     */
-    private $password;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="staff")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $idService;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="staff")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $idRole;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Manage::class, mappedBy="idStaff", orphanRemoval=true)
-     */
-    private $manages;
-
-    /**
-     * @ORM\OneToMany(targetEntity=AddStay::class, mappedBy="idStaff", orphanRemoval=true)
-     */
-    private $addStays;
-
-    public function __construct()
-    {
-        $this->manages = new ArrayCollection();
-        $this->addStays = new ArrayCollection();
-    }
+    private $lastName;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
     }
 
     public function getLogin(): ?string
@@ -108,9 +61,41 @@ class Staff
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->password;
+        return (string) $this->login;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -120,86 +105,43 @@ class Staff
         return $this;
     }
 
-    public function getIdService(): ?Service
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
     {
-        return $this->idService;
-    }
-
-    public function setIdService(?Service $idService): self
-    {
-        $this->idService = $idService;
-
-        return $this;
-    }
-
-    public function getIdRole(): ?Role
-    {
-        return $this->idRole;
-    }
-
-    public function setIdRole(?Role $idRole): self
-    {
-        $this->idRole = $idRole;
-
-        return $this;
+        // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
-     * @return Collection|Manage[]
+     * @see UserInterface
      */
-    public function getManages(): Collection
+    public function eraseCredentials()
     {
-        return $this->manages;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
-    public function addManage(Manage $manage): self
+    public function getFirstName(): ?string
     {
-        if (!$this->manages->contains($manage)) {
-            $this->manages[] = $manage;
-            $manage->setIdStaff($this);
-        }
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function removeManage(Manage $manage): self
+    public function getLastName(): ?string
     {
-        if ($this->manages->removeElement($manage)) {
-            // set the owning side to null (unless already changed)
-            if ($manage->getIdStaff() === $this) {
-                $manage->setIdStaff(null);
-            }
-        }
-
-        return $this;
+        return $this->lastName;
     }
 
-    /**
-     * @return Collection|AddStay[]
-     */
-    public function getAddStays(): Collection
+    public function setLastName(string $lastName): self
     {
-        return $this->addStays;
-    }
-
-    public function addAddStay(AddStay $addStay): self
-    {
-        if (!$this->addStays->contains($addStay)) {
-            $this->addStays[] = $addStay;
-            $addStay->setIdStaff($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAddStay(AddStay $addStay): self
-    {
-        if ($this->addStays->removeElement($addStay)) {
-            // set the owning side to null (unless already changed)
-            if ($addStay->getIdStaff() === $this) {
-                $addStay->setIdStaff(null);
-            }
-        }
+        $this->lastName = $lastName;
 
         return $this;
     }
