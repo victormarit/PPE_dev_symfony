@@ -7,5 +7,7 @@
 {% block title %}Acceuil{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_logout') }}">Disconnect</span></a>
+    {% include 'composants/header.html.twig' %}
+    {% include 'composants/searchBar.html.twig' %}
+
 {% endblock %}

@@ -15,6 +15,6 @@ class HomepageController extends AbstractController
      */
     public function index()
     {
-        return $this->render('homepage.html.twig');
+        return $this->render('pages/homepage.html.twig');
     }
 }

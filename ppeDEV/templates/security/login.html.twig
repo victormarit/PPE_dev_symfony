@@ -9,6 +9,11 @@
 
 {% block body %}
 <form method="post">
+    <nav class = "navbar">
+        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+    </nav>
+
+    
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -20,9 +25,7 @@
     {% endif %}
 
 
-    <nav class = "navbar">
-        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-    </nav>
+
 
     <div class="form-row mt-5">
         <div class="col-md-12 mb-3">

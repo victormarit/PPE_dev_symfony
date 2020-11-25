@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+
+{% block title %}Nouvel Utilisateur{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {{ form_start(form) }}
+
+    {{ form_label(form.roles) }} <br>
+    {{ form_widget(form.roles.0) }}{{ form_label(form.roles.0) }}<br>
+    {{ form_widget(form.roles.1) }}{{ form_label(form.roles.1) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}
