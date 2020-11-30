@@ -54,7 +54,7 @@ class PatientType extends AbstractType
                     'AB' => 'AB'
                 ]
             ])
-            ->add("Ajouter", SubmitType::class)
+            ->add("Sauvegarder", SubmitType::class)
         ;
     }
 
