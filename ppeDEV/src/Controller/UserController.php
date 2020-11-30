@@ -71,13 +71,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/supprimerPatient", name="delPatient")
+     * @Route("/user/supprimerPatient?id={id}", name="delPatient")
      * @param Request $request
      * @return Response
      */
-    public function delPatient(Request $request):Response 
+    public function delPatient(Request $request, $id):Response 
     {
-        $user = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => 1]);
+        $user = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
