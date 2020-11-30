@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="../css/searchBar.css">
 {% endblock %}
 
 
-{% block title %}Acceuil{% endblock %}
+{% block title %}Nouveau Patient{% endblock %}
 
 {% block body %}
     {% include 'composants/header.html.twig' %}
-    {% include 'composants/searchBar.html.twig' %}
-
+    {{ form_start(form) }}
+    {{ form_end(form) }}
 {% endblock %}
