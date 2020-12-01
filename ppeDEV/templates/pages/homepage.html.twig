@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="../css/searchBar.css">
+    <link rel="stylesheet" href="../css/homepage.css">
 {% endblock %}
 
 
@@ -11,9 +12,26 @@
     {% include 'composants/header.html.twig' %}
     {% include 'composants/searchBar.html.twig' %}
 
-    {% for patient in patients %}
-        {{ patient.lastName }}
-    {% endfor %}
+    <div class = "alignCards">
+        {% for patient in patients %}
+            <div class="card ml-2 mr-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ patient.firstName }} {{ patient.lastName }}</h5>
+                    <p class="card-text"><strong>Numéro de sécurité sociale :</strong> {{ patient.socialSecurityNumber }}</p>
+                    <a href="{{ path( 'updatePatient',  {'id': patient.id} ) }}" class="btn btn-primary">Modifier</a>
+                    <a href="{{ path( 'delPatient',  {'id': patient.id} ) }}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="card ml-2 mr-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Ajouter un patient</h5>
+                <a href="{{ path( 'createPatient') }}" class="btn btn-primary">Ajouter</a>
+            </div>
+        </div>
+
+    </div>
 
     {{ knp_pagination_render(patients) }}
 

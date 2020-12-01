@@ -13,9 +13,10 @@ use Knp\Component\Pager\PaginatorInterface;
 class UserController extends AbstractController
 {
 
-
     /**
-     * @Route("/user/homepage", name="homepage")
+     * @Route("/user/homepagePatient", name="homepagePatient")
+     * @param Request $request
+     * @return Response
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
@@ -23,7 +24,7 @@ class UserController extends AbstractController
         $patients = $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
-            9//nombre d'élement par page 
+            9//nombre d'élements par page 
         );
         return $this->render('pages/homepage.html.twig', [
             'patients' => $patients
@@ -46,7 +47,7 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            return $this->redirectToRoute('homepage'); 
+            return $this->redirectToRoute('homepagePatient'); 
         }
         
         return $this->render('pages/addPatient.html.twig', [
@@ -69,7 +70,7 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            return $this->redirectToRoute('homepage'); 
+            return $this->redirectToRoute('homepagePatient'); 
         }
         
         return $this->render('pages/addPatient.html.twig', [
@@ -89,6 +90,6 @@ class UserController extends AbstractController
         $em->remove($user);
         $em->flush();
            
-        return $this->redirectToRoute('homepage'); 
+        return $this->redirectToRoute('homepagePatient'); 
     }
 }

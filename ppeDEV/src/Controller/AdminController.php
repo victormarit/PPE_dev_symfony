@@ -26,7 +26,7 @@ class AdminController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($staff);
             $em->flush();
-            return $this->redirectToRoute('homepage'); 
+            return $this->redirectToRoute('homepagePatient'); 
         }
         
         return $this->render('admin/newStaffMember.html.twig', [
@@ -46,7 +46,7 @@ class AdminController extends AbstractController
         $em->remove($staff);
         $em->flush();
            
-        return $this->redirectToRoute('homepage'); 
+        return $this->redirectToRoute('homepagePatient'); 
     }
 
     /**
@@ -64,7 +64,7 @@ class AdminController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($staff);
             $em->flush();
-            return $this->redirectToRoute('homepage'); 
+            return $this->redirectToRoute('homepagePatient'); 
         }
         
         return $this->render('admin/newStaffMember.html.twig', [
