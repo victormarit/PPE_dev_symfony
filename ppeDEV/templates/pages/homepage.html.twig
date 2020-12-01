@@ -11,4 +11,10 @@
     {% include 'composants/header.html.twig' %}
     {% include 'composants/searchBar.html.twig' %}
 
+    {% for patient in patients %}
+        {{ patient.lastName }}
+    {% endfor %}
+
+    {{ knp_pagination_render(patients) }}
+
 {% endblock %}

@@ -12,14 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
-     */
-    public function index()
-    {
-        return $this->render('pages/homepage.html.twig');
-    }
-
-    /**
      * @Route("/admin/createStaffMember", name="createNewStaffMember")
      * @param Request $request
      * @return Response
@@ -43,11 +35,26 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/modifierStaff&id={id}, name="updateStaff")
+     * @Route("/user/supprimerStaffMember?id={id}", name="delStaff")
      * @param Request $request
      * @return Response
      */
-    public function updateStaff (Request $request, $id):Response 
+    public function delStaff($id):Response 
+    {
+        $staff = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($staff);
+        $em->flush();
+           
+        return $this->redirectToRoute('homepage'); 
+    }
+
+    /**
+     * @Route("/admin/modifierStaffMember&id={id}", name="updateStaff")
+     * @param Request $request
+     * @return Response
+     */
+    public function updateStaff(Request $request, $id):Response 
     {
         $staff = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
         $form =  $this->createForm(StaffFromType::class, $staff);
@@ -63,20 +70,5 @@ class AdminController extends AbstractController
         return $this->render('admin/newStaffMember.html.twig', [
             "form" => $form->createView()
         ]);
-    }
-
-    /**
-     * @Route("/user/supprimerStaffMember?id={id}", name="delStaff")
-     * @param Request $request
-     * @return Response
-     */
-    public function delStaff(Request $request, $id):Response 
-    {
-        $staff = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($staff);
-        $em->flush();
-           
-        return $this->redirectToRoute('homepage'); 
     }
 }

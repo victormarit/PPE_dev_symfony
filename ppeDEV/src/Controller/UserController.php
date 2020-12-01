@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class UserController extends AbstractController
 {
@@ -16,11 +17,18 @@ class UserController extends AbstractController
     /**
      * @Route("/user/homepage", name="homepage")
      */
-    public function index()
+    public function index(Request $request, PaginatorInterface $paginator)
     {
-        return $this->render('pages/homepage.html.twig');
+        $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy([], ['id'=>'desc']);
+        $patients = $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
+            9//nombre d'élement par page 
+        );
+        return $this->render('pages/homepage.html.twig', [
+            'patients' => $patients
+        ]);
     }
-
 
     /**
      * @Route("/user/ajouterPatient", name="createPatient")
@@ -45,7 +53,6 @@ class UserController extends AbstractController
             "form" => $form->createView()
         ]);
     }
-
 
     /**
      * @Route("/user/modifierPatient&?id={id}", name="updatePatient")
