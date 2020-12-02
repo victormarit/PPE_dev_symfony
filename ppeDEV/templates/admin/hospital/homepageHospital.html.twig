@@ -12,24 +12,37 @@
     {% include 'composants/header.html.twig' %}
     {% include 'composants/searchBar.html.twig' %}
 
-    <div class = "alignCards">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Services</th>
+            <th scope="col">Commades</th>
+          </tr>
+        </thead>
+
+        {% set num = 0 %}
+
         {% for service in services %}
-            <div class="card ml-2 mr-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ service.name }}</h5>
-                    <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-primary">Modifier</a>
-                    <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger">Supprimer</a>
-                </div>
-            </div>
+            {% set num = num + 1 %}
+            <tbody>
+              <tr>
+                <th scope="row">{{ num }}</th>
+                <td>{{ service.name }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary">Consulter</a>
+                    <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger">Supprimer</a>   
+                </td>
+              </tr>
+            </tbody>
         {% endfor %}
-
-        <div class="card ml-2 mr-2" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Ajouter un service</h5>
-                <a href="{{ path('addService') }}" class="btn btn-primary">Ajouter</a>
-            </div>
+    </table>
+    <div class="card ml-2 mr-2" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Ajouter un service</h5>
+            <a href="{{ path('addService') }}" class="btn btn-primary">Ajouter</a>
         </div>
-
     </div>
 
 {% endblock %}
