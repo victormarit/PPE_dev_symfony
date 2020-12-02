@@ -20,6 +20,7 @@
                     <p class="card-text"><strong>Numéro de sécurité sociale :</strong> {{ patient.socialSecurityNumber }}</p>
                     <a href="{{ path( 'updatePatient',  {'id': patient.id} ) }}" class="btn btn-primary">Modifier</a>
                     <a href="{{ path( 'delPatient',  {'id': patient.id} ) }}" class="btn btn-danger">Supprimer</a>
+                    <a href="{{ path( 'staysPatient',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info">Séjours</a>
                 </div>
             </div>
         {% endfor %}

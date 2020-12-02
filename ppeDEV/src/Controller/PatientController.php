@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Patient;
+use App\Entity\Stay;
 use App\Form\PatientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
-class UserController extends AbstractController
+class PatientController extends AbstractController
 {
 
     /**
@@ -43,7 +44,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         
         if($form->isSubmitted()&& $form->isValid()){
-            //Vérifier le numéro de sécu pour être sur qu'il est bien unique. 
+            //Vérifie le numéro de sécu pour être sur qu'il est bien unique. 
             $test = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
             if($test === null)
             {
@@ -60,7 +61,6 @@ class UserController extends AbstractController
                 ]);
             } 
         }
-        
         return $this->render('pages/addPatient.html.twig', [
             "form" => $form->createView()
         ]);
@@ -91,10 +91,9 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user/supprimerPatient?id={id}", name="delPatient")
-     * @param Request $request
      * @return Response
      */
-    public function delPatient(Request $request, $id):Response 
+    public function delPatient($id):Response 
     {
         $user = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
         $em = $this->getDoctrine()->getManager();
@@ -102,5 +101,27 @@ class UserController extends AbstractController
         $em->flush();
            
         return $this->redirectToRoute('homepagePatient'); 
+    }
+
+    /**
+     * @Route("/user/séjoursPatient?id={id}&name={lastname}&firstname={firstname}", name="staysPatient")
+     * @param Request $request
+     * @return Response
+     */
+    public function staysPatient(Request $request, $id, PaginatorInterface $paginator, $lastname, $firstname):Response 
+    {
+        $data = $this->getDoctrine()->getRepository(Stay::class)->FindUserStays($id); //On peut passer par une requête SQL pour améliorer le système
+        
+        $stays = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
+            5//nombre d'élements par page 
+        );
+        dump($stays);
+        return $this->render('pages/historyStay.html.twig',[
+            "stays" => $stays,
+            "lastname" => $lastname,
+            "firstname" => $firstname
+        ]); 
     }
 }
