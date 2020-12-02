@@ -6,13 +6,14 @@ use App\Entity\Staff;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class StaffFromType extends AbstractType
+class StaffType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -30,11 +31,11 @@ class StaffFromType extends AbstractType
                 'label'=>'Mot de passe',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 4,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe devrait faire {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],
@@ -61,6 +62,7 @@ class StaffFromType extends AbstractType
                 'multiple' => true,
                 'expanded' => true
             ])
+            ->add("Sauvegarder", SubmitType::class)
         ;
     }
     public function configureOptions(OptionsResolver $resolver)

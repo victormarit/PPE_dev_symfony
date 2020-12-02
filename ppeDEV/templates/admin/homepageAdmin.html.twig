@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="../css/searchBar.css">
+    <link rel="stylesheet" href="../css/homepage.css">
+{% endblock %}
+
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {% include 'composants/searchBar.html.twig' %}
+
+    <div class = "alignCards">
+        {% for staff in staffs %}
+            <div class="card ml-2 mr-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ staff.firstName }} {{ staff.lastName }}</h5>
+                    <p class="card-text"><strong>Numéro de sécurité sociale :</strong> {{ staff.roles[0] }}</p>
+                    <a href="{{ path( 'updateStaff',  {'id': staff.id} ) }}" class="btn btn-primary">Modifier</a>
+                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="card ml-2 mr-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Créer un salarié</h5>
+                <a href="{{ path( 'createNewStaffMember') }}" class="btn btn-primary">Ajouter</a>
+            </div>
+        </div>
+
+    </div>
+
+    {{ knp_pagination_render(staffs) }}
+
+{% endblock %}

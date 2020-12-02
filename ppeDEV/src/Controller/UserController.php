@@ -44,10 +44,21 @@ class UserController extends AbstractController
         
         if($form->isSubmitted()&& $form->isValid()){
             //Vérifier le numéro de sécu pour être sur qu'il est bien unique. 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            return $this->redirectToRoute('homepagePatient'); 
+            $test = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
+            if($test === null)
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+                return $this->redirectToRoute('homepagePatient'); 
+            }
+            else
+            {
+                return $this->render('pages/addPatient.html.twig', [
+                    "form" => $form->createView(),
+                    'error' => True
+                ]);
+            } 
         }
         
         return $this->render('pages/addPatient.html.twig', [

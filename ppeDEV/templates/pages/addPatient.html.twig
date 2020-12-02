@@ -8,6 +8,11 @@
 
 {% block body %}
     {% include 'composants/header.html.twig' %}
+    
+    {% if error is defined %}
+        <div class="alert alert-danger">Un utilisateur avec ce numéro de sécurité social existe déjà</div>
+    {% endif %}
+
     {{ form_start(form) }}
     {{ form_end(form) }}
 {% endblock %}
