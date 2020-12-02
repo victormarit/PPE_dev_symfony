@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+
+{% block title %}Service{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
