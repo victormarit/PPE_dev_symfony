@@ -53,10 +53,11 @@ class StayRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-        Select service.name service, bed.number bed, hospital_room.number room, stay.entry_date entryDate, stay.leave_date leaveDate, stay.creation_date creationDate
+        Select service.name service, TIMEDIFF(stay.leave_date, stay.entry_date) duree, bed.number bed, hospital_room.number room, stay.entry_date entryDate, stay.leave_date leaveDate, stay.creation_date creationDate
         From stay, bed, hospital_room, service 
-        Where id_Patient_id = :id and bed.id = stay.id_bed_id and bed.id_hospital_room_id = hospital_room.id and service.id = hospital_room.id_service_id;
-            ';
+        Where id_Patient_id = :id and bed.id = stay.id_bed_id and bed.id_hospital_room_id = hospital_room.id and service.id = hospital_room.id_service_id
+        ORDER BY service.id DESC;
+        ';
         $stmt = $conn->prepare($sql);
         $stmt->execute(['id' => $id]);
 

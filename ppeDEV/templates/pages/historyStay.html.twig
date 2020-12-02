@@ -23,6 +23,7 @@
             <th scope="col">Numéro</th>
             <th scope="col">Date d'entrée</th>
             <th scope="col">Date de sortie</th>
+            <th scope="col">Durée du séjour</th>
             <th scope="col">Date de création</th>
             <th scope="col">Service</th>
             <th scope="col">Chambre</th>
@@ -38,7 +39,8 @@
               <tr>
                 <th scope="row">{{ num }}</th>
                 <td>{{ stay.entryDate|date('d/m/Y H:i') }}</td>
-                <td>{{ stay.leaveDate|date('d/m/Y') }}</td>
+                <td>{{ stay.leaveDate|date('d/m/Y H:i') }}</td>
+                <td>{{ stay.duree }}</td>
                 <td>{{ stay.creationDate|date('d/m/Y') }}</td>
                 <td>{{ stay.service }}</td>
                 <td>{{ stay.room }}</td>
