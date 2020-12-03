@@ -15,9 +15,9 @@ class HospitalController extends AbstractController
      */
     public function homepageHospital()
     {
-        $services  = $this->getDoctrine()->getRepository(Service::class)->findBy([], ['id'=>'desc']);
+        $data = $this->getDoctrine()->getRepository(Service::class)->FindServices();
         return $this->render('admin/hospital/homepageHospital.html.twig', [
-            'services' => $services
+            'services' => $data
         ]);
     }
 

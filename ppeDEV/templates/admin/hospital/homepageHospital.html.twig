@@ -17,7 +17,8 @@
           <tr>
             <th scope="col">Numéro</th>
             <th scope="col">Services</th>
-            <th scope="col">Commades</th>
+            <th scope="col">Nombre de lits</th>
+            <th scope="col">Commandes</th>
           </tr>
         </thead>
 
@@ -29,9 +30,10 @@
               <tr>
                 <th scope="row">{{ num }}</th>
                 <td>{{ service.name }}</td>
+                <td>{{ service.bed }}</td>
                 <td>
                     <a href="#" class="btn btn-primary">Consulter</a>
-                    <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-info">Modifier</a>
                     <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger">Supprimer</a>   
                 </td>
               </tr>
