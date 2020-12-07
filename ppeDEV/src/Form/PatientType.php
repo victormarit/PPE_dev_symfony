@@ -55,7 +55,11 @@ class PatientType extends AbstractType
                     'AB' => 'AB'
                 ]
             ])
-            ->add("Sauvegarder", SubmitType::class)
+            ->add("Sauvegarder", SubmitType::class, [
+                "attr" => [
+                    "class" => "btn btn-primary mt-3 w-100"
+                ]
+            ])
         ;
     }
 
