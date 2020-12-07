@@ -1,0 +1,12 @@
+Commandes créer BDD de test :
+#php bin/console doctrine:database:create --env=test
+
+Commande pour mettre à jour le schema BDD :
+#php bin/console doctrine:schema:update --env=test --force
+
+Vider la base et remplir de fausse données :
+php bin/console doctrine:fixtures:load --env=test --force
+
+Créer une classe de fausse données :
+php bin/console make:fixtures
+

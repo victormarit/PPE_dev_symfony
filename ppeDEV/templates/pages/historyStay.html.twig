@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="../css/searchBar.css">
+    <link rel="stylesheet" href="../css/homepage.css">
+{% endblock %}
+
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    <div class="search">
+        <h1>Séjour de {{ firstname }} {{ lastname }}</h1>
+    </div>
+    {% if stays.items|length == 0 %}
+        <p>Aucun séjour pour ce patient</p>
+    {% else %}
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Date d'entrée</th>
+            <th scope="col">Date de sortie</th>
+            <th scope="col">Durée du séjour</th>
+            <th scope="col">Date de création</th>
+            <th scope="col">Service</th>
+            <th scope="col">Chambre</th>
+            <th scope="col">Lit</th>
+          </tr>
+        </thead>
+
+        {% set num = 0 %}
+
+        {% for stay in stays.items %}
+            {% set num = num + 1 %}
+            <tbody>
+              <tr>
+                <th scope="row">{{ num }}</th>
+                <td>{{ stay.entryDate|date('d/m/Y H:i') }}</td>
+                <td>{{ stay.leaveDate|date('d/m/Y H:i') }}</td>
+                <td>{{ stay.duree }}</td>
+                <td>{{ stay.creationDate|date('d/m/Y') }}</td>
+                <td>{{ stay.service }}</td>
+                <td>{{ stay.room }}</td>
+                <td>{{ stay.bed }}</td>
+              </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {{ knp_pagination_render(stays) }}
+
+{% endblock %}
+

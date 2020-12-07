@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+
+{% block title %}Nouveau Séjour{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+{% endblock %}
