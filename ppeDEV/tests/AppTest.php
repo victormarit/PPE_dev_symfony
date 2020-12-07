@@ -20,4 +20,14 @@ class ConnectionTests extends WebTestCase
         $crawler = $client->request('GET', '/');
         $this->assertResponseStatusCodeSame(200);
     }
+    public function testAccesRouteAdminWithoutConnection(){
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/admin/GestionHopital');
+        $this->assertResponseStatusCodeSame(302);
+    }
+    public function testAccesRouteUserWithoutConnection(){
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/user/homepagePatient');
+        $this->assertResponseStatusCodeSame(302);
+    }
 } 
