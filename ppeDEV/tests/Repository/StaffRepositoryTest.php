@@ -2,10 +2,10 @@
 
 namespace App\Tests\Repository;
 
-use App\Entity\Product;
+use App\Entity\Staff;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ProductRepositoryTest extends KernelTestCase
+class StaffRepositoryTest extends KernelTestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -23,12 +23,26 @@ class ProductRepositoryTest extends KernelTestCase
 
     public function testSearchByName()
     {
-        $product = $this->entityManager
-            ->getRepository(Product::class)
-            ->findOneBy(['name' => 'Priceless widget'])
+        /** @var  $staff Staff */
+        $staff = $this->entityManager
+            ->getRepository(Staff::class)
+            ->findOneBy(['firstName' => 'Victor'])
         ;
+        $this->assertSame('Victor', $staff->getFirstName());
 
-        $this->assertSame(14.50, $product->getPrice());
+        $this->assertNotSame('Grégoire', $staff->getFirstName());
+    }
+
+    public function testPasswordHashing()
+    {
+        /** @var  $staff Staff */
+        $staff = $this->entityManager
+            ->getRepository(Staff::class)
+            ->findOneBy(["firstName" => "Grégoire"]);
+
+        $this->assertTrue(password_verify("adminadmin", $staff->getPassword()));
+
+        $this->assertNotTrue(password_verify("useruser", $staff->getPassword()));
     }
 
     protected function tearDown(): void
