@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="../css/form.css">
 {% endblock %}
 
 
@@ -10,9 +11,22 @@
     {% include 'composants/header.html.twig' %}
     
     {% if error is defined %}
-        <div class="alert alert-danger">Un utilisateur avec ce numéro de sécurité social existe déjà</div>
+        <div class="alert alert-danger">Ce patient existe déja...</div>
     {% endif %}
 
-    {{ form_start(form) }}
-    {{ form_end(form) }}
+    <div class="d-flex justify-content-center">
+        {{ form_start(form, {'attr':{'class':'w-75 d-flex flex-column'}} )}}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.socialSecurityNumber) }}
+        {{ form_row(form.birthDate) }}
+        {{ form_row(form.bloodType) }}
+        <div class="mt-4 d-flex justify-content-center w-100 button">
+            {{ form_row(form.Sauvegarder)}}
+        </div>
+        {{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
+
+
 {% endblock %}
