@@ -35,4 +35,21 @@ class HospitalRoomRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function FindRooms($id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT hospital_room.id, hospital_room.number, COUNT(*) as "countBed" 
+        From hospital_room 
+        LEFT JOIN bed ON hospital_room.id = bed.id_hospital_room_id 
+        WHERE hospital_room.id_service_id = :id
+        GROUP BY hospital_room.id
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

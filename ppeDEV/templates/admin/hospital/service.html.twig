@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="../../css/searchBar.css">
+    <link rel="stylesheet" href="../../css/homepage.css">
+{% endblock %}
+
+
+{% block title %}Gestion {{ service }} {% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {% include 'composants/searchBar.html.twig' %}
+
+
+    {% if rooms| length == 0  %}
+        <p>Ce service n'a pas encore de chambre</p>
+    {% else  %}
+
+        {% for room in rooms %}
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Numéro de chambre</th>
+                    <th scope="col">Nombre de lits</th>
+                    <th scope="col">Commandes</th>
+                  </tr>
+                </thead>
+            
+                <tbody>
+                  <tr>
+                    <td>{{ room.number }}</td>
+                    <td> {{ room.countBed }}</td>
+                    <td>
+                        <a href="{{ path( 'addBed',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-primary">Ajouter un lit</a>
+                        <a href="#" class="btn btn-info">Modifier</a>
+                        <a href="#" class="btn btn-danger">Retirer</a>   
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+            {{ knp_pagination_render(rooms) }}
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

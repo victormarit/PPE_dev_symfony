@@ -6,7 +6,7 @@
 {% endblock %}
 
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Gestion Services{% endblock %}
 
 {% block body %}
     {% include 'composants/header.html.twig' %}
@@ -32,7 +32,7 @@
                 <td>{{ service.name }}</td>
                 <td>{{ service.bed }}</td>
                 <td>
-                    <a href="#" class="btn btn-primary">Consulter</a>
+                    <a href="{{ path( 'manageService',  {'id': service.id, "name" : service.name} ) }}" class="btn btn-primary">Gérer</a>
                     <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-info">Modifier</a>
                     <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger">Supprimer</a>   
                 </td>
@@ -46,5 +46,5 @@
             <a href="{{ path('addService') }}" class="btn btn-primary">Ajouter</a>
         </div>
     </div>
-
+{{ knp_pagination_render(services) }}
 {% endblock %}
