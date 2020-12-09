@@ -10,8 +10,6 @@ class ServiceFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $service = new Service();
         $service->setName("Cardiologie");
 

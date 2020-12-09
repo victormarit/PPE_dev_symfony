@@ -12,9 +12,6 @@ class BedFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         $bed = new Bed();
 
         $bed->setNumber(1);
@@ -42,7 +39,6 @@ class BedFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return array(
-            ServiceFixtures::class,
             HospitalRoomFixtures::class
         );
     }
