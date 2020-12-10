@@ -14,9 +14,9 @@
         <h1>Séjour de {{ firstname }} {{ lastname }}</h1>
     </div>
     {% if stays.items|length == 0 %}
-        <p>Aucun séjour pour ce patient</p>
+        <p class="mt-5 h5 text-danger text-center">Aucun séjour pour ce patient</p>
     {% else %}
-
+        <div class="table-responsive">
     <table class="table">
         <thead>
           <tr>
@@ -55,7 +55,7 @@
         {% endfor %}
     </table>
     {% endif %}
-
+    </div>
     {{ knp_pagination_render(stays) }}
 
 {% endblock %}

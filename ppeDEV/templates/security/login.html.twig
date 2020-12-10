@@ -21,13 +21,13 @@
 
 
     <form method="post">
-    <div class="form mt-5">
-        <div class="col-md-12 mb-3">
-            <div align="center">
+    <div class="form mt-5" align="center">
+        <div class="mb-3 w-50">
+            <div class="w-100" align="center">
                 <div class="form-signin login">
-                    <label for="inputLogin">Identifiant:</label>
+                    <label for="inputLogin" class="h3">Identifiant:</label>
                     <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" required autofocus>
-                    <label for="inputPassword" class="mt-4">Mot de passe:</label>
+                    <label for="inputPassword" class="mt-4 h3">Mot de passe:</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
