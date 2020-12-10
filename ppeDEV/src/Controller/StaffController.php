@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AdminController extends AbstractController
+class StaffController extends AbstractController
 {
     /**
      * @Route("/admin/GestionPersonnel", name="homepageStaff")

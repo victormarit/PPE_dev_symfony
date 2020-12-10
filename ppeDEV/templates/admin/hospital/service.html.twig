@@ -43,13 +43,14 @@
         {% endfor %}
         {{ knp_pagination_render(rooms) }}
         </table>
-        <div class="card ml-2 mr-2" style="width: 18rem;">
-          <div class="card-body">
-              <h5 class="card-title">Ajouter une chambre</h5>
-              <a href="{{ path( 'addRoom',  {'id': id, "name" : service} ) }}" class="btn btn-primary">Ajouter</a>
-          </div>
-        </div>
 
     {% endif %}
+    
+    <div class="card ml-2 mr-2" style="width: 18rem;">
+      <div class="card-body">
+          <h5 class="card-title">Ajouter une chambre</h5>
+          <a href="{{ path( 'addRoom',  {'id': id, "name" : service} ) }}" class="btn btn-primary">Ajouter</a>
+      </div>
+    </div>
 
 {% endblock %}
