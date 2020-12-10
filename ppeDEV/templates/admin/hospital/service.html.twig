@@ -17,30 +17,38 @@
         <p>Ce service n'a pas encore de chambre</p>
     {% else  %}
 
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numéro de chambre</th>
+            <th scope="col">Nombre de lits</th>
+            <th scope="col">Commandes</th>
+          </tr>
+        </thead>
+
         {% for room in rooms %}
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Numéro de chambre</th>
-                    <th scope="col">Nombre de lits</th>
-                    <th scope="col">Commandes</th>
-                  </tr>
-                </thead>
-            
                 <tbody>
                   <tr>
                     <td>{{ room.number }}</td>
-                    <td> {{ room.countBed }}</td>
+                    <td>{{ room.countBed }}</td>
                     <td>
                         <a href="{{ path( 'addBed',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-primary">Ajouter un lit</a>
-                        <a href="#" class="btn btn-info">Modifier</a>
-                        <a href="#" class="btn btn-danger">Retirer</a>   
+                        <a href="{{ path( 'removeBed',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-warning">Retirer un lit</a>
+                        <a href="{{ path( 'updateRoom',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-info">Modifier</a>
+                        <a href="{{ path( 'delRoom',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-danger">Supprimer</a>   
                     </td>
                   </tr>
                 </tbody>
-            </table>
-            {{ knp_pagination_render(rooms) }}
+            
         {% endfor %}
+        {{ knp_pagination_render(rooms) }}
+        </table>
+        <div class="card ml-2 mr-2" style="width: 18rem;">
+          <div class="card-body">
+              <h5 class="card-title">Ajouter une chambre</h5>
+              <a href="{{ path( 'addRoom',  {'id': id, "name" : service} ) }}" class="btn btn-primary">Ajouter</a>
+          </div>
+        </div>
 
     {% endif %}
 

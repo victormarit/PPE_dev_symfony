@@ -41,7 +41,7 @@ class HospitalRoomRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-        SELECT hospital_room.id, hospital_room.number, COUNT(*) as "countBed" 
+        SELECT hospital_room.id, hospital_room.number, COUNT(bed.id) as "countBed" 
         From hospital_room 
         LEFT JOIN bed ON hospital_room.id = bed.id_hospital_room_id 
         WHERE hospital_room.id_service_id = :id

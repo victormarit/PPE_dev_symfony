@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Bed;
 use App\Entity\HospitalRoom;
 use App\Entity\Service;
+use App\Form\HospitalRoomType;
 use App\Form\ServiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,7 +87,6 @@ class HospitalController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($service);
         $em->flush();
-           
         return $this->redirectToRoute('homepageHospital'); 
     }
 
@@ -121,18 +121,117 @@ class HospitalController extends AbstractController
         $beds = $this->getDoctrine()->getRepository(Bed::class)->findBy(['idHospitalRoom' => $room]);
         $nb = count($beds)+1;
         
-        
-        
         $bed = new Bed();
         $bed->setNumber($nb);
         $bed->setIdHospitalRoom($hospitalRoom);
-        
-        
+            
         $em = $this->getDoctrine()->getManager();
         $em->persist($bed);
         $em->flush();
         
         return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
     }
+    
+    /**
+     * @Route("/user/retirerLit?id={id}&name={name}&room={room}", name="removeBed")
+     * @param Request $request
+     * @return Response
+     */
+    public function removeBed($id, $name, $room):Response 
+    {
+        $hospitalRoom = $this->getDoctrine()->getRepository(HospitalRoom::class)->findOneBy(['id' => $room]);
+        $beds = $this->getDoctrine()->getRepository(Bed::class)->findBy(['idHospitalRoom' => $hospitalRoom]);
+        $nb = count($beds);
+        if ($nb > 1){
+            $bed = $this->getDoctrine()->getRepository(Bed::class)->findOneBy(['number' => $nb]);
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($bed);
+            $em->flush();            
+        }
+        elseif($nb==1){
+            return $this->redirectToRoute('delRoom', ["id" => $id, "name" => $name, "room" => $room]);
+        }       
+        return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
+    }
+
+    /**
+     * @Route("/user/ajouterChambre&id={id}&name={name}", name="addRoom")
+     * @param Request $request
+     * @return Response
+     */
+    public function addRoom(Request $request,$id, $name):Response 
+    {
+        $service = $this->getDoctrine()->getRepository(Service::class)->findOneBy(['id' => $id]);
+        $room = new HospitalRoom;
+        $room->setIdService($service);
+        $form =  $this->createForm(HospitalRoomType::class, $room);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted()&& $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($room);
+            $em->flush();
+
+            $bed = new Bed;
+            $bed->setIdHospitalRoom($room);
+            $bed->setNumber(1);
+            
+            $em->persist($bed);
+            $em->flush();
+
+            return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
+        }
+        
+        return $this->render('admin/hospital/addRoom.html.twig', [
+            "form" => $form->createView(),
+        ]); 
+    }
+
+    /**
+     * @Route("/user/supprimerChambre&id={id}&name={name}?room={room}", name="delRoom")
+     * @return Response
+     */
+    public function delRoom($id, $name, $room): Response 
+    {
+        $hospitalRoom = $this->getDoctrine()->getRepository(HospitalRoom::class)->findOneBy(['id' => $room]);
+        $beds = $this->getDoctrine()->getRepository(Bed::class)->findBy(['idHospitalRoom' => $hospitalRoom]);
+        
+        for($i =0 ; $i < count($beds) ; $i++){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($beds[$i]);
+            $em->flush();
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($hospitalRoom);
+        $em->flush();
+        
+        return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
+    }
+
+    /**
+     * @Route("/user/modifierChambre&id={id}&name={name}?room={room}", name="updateRoom")
+     * @param Request $request
+     * @return Response
+     */
+    public function updateRoom(Request $request,$id, $name, $room):Response 
+    {
+        $room = $this->getDoctrine()->getRepository(HospitalRoom::class)->findOneBy(['id' => $room]);
+        $form =  $this->createForm(HospitalRoomType::class, $room);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted()&& $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($room);
+            $em->flush();
+
+            return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
+        }
+        
+        return $this->render('admin/hospital/addRoom.html.twig', [
+            "form" => $form->createView(),
+        ]); 
+    }
+
 
 }
