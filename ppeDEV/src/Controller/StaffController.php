@@ -60,7 +60,7 @@ class StaffController extends AbstractController
     }
 
     /**
-     * @Route("/user/supprimerStaffMember?id={id}", name="delStaff")
+     * @Route("/user/supprimerStaffMember/{id}", name="delStaff")
      * @param Request $request
      * @return Response
      */
@@ -75,7 +75,7 @@ class StaffController extends AbstractController
     }
 
     /**
-     * @Route("/admin/modifierStaffMember&id={id}", name="updateStaff")
+     * @Route("/admin/modifierStaffMember/{id}", name="updateStaff")
      * @param Request $request
      * @return Response
      */
