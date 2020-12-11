@@ -20,9 +20,9 @@
     {% include 'composants/header.html.twig' %}
     {% include 'composants/searchbarPatient.html.twig' %}
 
-    <div class = "alignCards">
+    <div class = "alignCards d-flex flex-wrap">
         {% for patient in patients %}
-            <div class="card ml-2 mr-2" style="width: 18rem;">
+            <div class="card mx-2 my-2" style="width: 18rem;">
                 <div class="card-body text-center">
                     <h4 class="card-title">{{ patient.firstName }} {{ patient.lastName }}</h4>
                     <p class="card-text"><a class ="font-weight-bold">Numéro de sécurité sociale :</a> {{ patient.socialSecurityNumber }}</p>
@@ -36,8 +36,8 @@
 
         <div class="card ml-2 mr-2 d-flex flex-column" style="width: 18rem;">
             <div class="card-body text-center d-flex flex-column">
-                <div style="font-size: 9vw">
-                    <a href="{{ path( 'createPatient') }}"><i class="fas fa-user-plus fa-xs"></i></a>
+                <div style="font-size: 16.5px;">
+                    <a href="{{ path( 'createPatient') }}"><i class=" my-5 fas fa-user-plus fa-10x"></i></a>
                 </div>
             </div>
         </div>
