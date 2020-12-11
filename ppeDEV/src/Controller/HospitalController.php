@@ -54,7 +54,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/modifierServiceHotpial?id={id}", name="updateService")
+     * @Route("/admin/modifierServiceHotpial/{id}", name="updateService")
      * @param Request $request
      * @return Response
      */
@@ -77,7 +77,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/supprimerService?id={id}", name="delService")
+     * @Route("/admin/supprimerService/{id}", name="delService")
      * @param Request $request
      * @return Response
      */
@@ -91,7 +91,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/gestionService?id={id}&name={name}", name="manageService")
+     * @Route("/admin/gestionService/{id}/{name}", name="manageService")
      * @param Request $request
      * @return Response
      */
@@ -133,7 +133,7 @@ class HospitalController extends AbstractController
     }
     
     /**
-     * @Route("/admin/retirerLit?id={id}&name={name}&room={room}", name="removeBed")
+     * @Route("/admin/retirerLit/{id}/{name}/{room}", name="removeBed")
      * @param Request $request
      * @return Response
      */
@@ -155,7 +155,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/ajouterChambre&id={id}&name={name}", name="addRoom")
+     * @Route("/admin/ajouterChambre/{id}/{name}", name="addRoom")
      * @param Request $request
      * @return Response
      */
@@ -188,7 +188,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/supprimerChambre&id={id}&name={name}?room={room}", name="delRoom")
+     * @Route("/admin/supprimerChambre/{id}/{name}/{room}", name="delRoom")
      * @return Response
      */
     public function delRoom($id, $name, $room): Response 
@@ -210,7 +210,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/modifierChambre&id={id}&name={name}?room={room}", name="updateRoom")
+     * @Route("/admin/modifierChambre/{id}/{name}/{room}", name="updateRoom")
      * @param Request $request
      * @return Response
      */

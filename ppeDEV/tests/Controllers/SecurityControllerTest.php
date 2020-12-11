@@ -29,13 +29,11 @@ class SecurityControllerTest extends WebTestCase
         $client->request('GET', '/');
         $this->assertResponseStatusCodeSame(200);
     }
-
     public function testGetConnectionPageAlreadyConnectedRole_Admin(){
         $client = $this->getAdminClient();
         $client->request('GET', '/');
         $this->assertResponseStatusCodeSame(302);
     }
-
     public function testGetConnectionPageAlreadyConnectedRole_User(){
         $client = $this->getUserClient();
         $client->request('GET', '/');
@@ -44,12 +42,12 @@ class SecurityControllerTest extends WebTestCase
 
     //Test fonctionnel Route /logout
     public function testLogoutRole_Admin(){
-        $client = $this->getUserClient();
+        $client = $this->getAdminClient();
         $client->request('GET', '/logout');
         $this->assertResponseStatusCodeSame(302);
     }
     public function testLogoutRole_User(){
-        $client = $this->getAdminClient();
+        $client = $this->getUserClient();
         $client->request('GET', '/logout');
         $this->assertResponseStatusCodeSame(302);
     }
