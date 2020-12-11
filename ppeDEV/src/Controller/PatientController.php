@@ -67,7 +67,7 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/user/modifierPatient&?id={id}", name="updatePatient")
+     * @Route("/user/modifierPatient/{id}", name="updatePatient")
      * @param Request $request
      * @return Response
      */
@@ -90,7 +90,7 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/user/supprimerPatient?id={id}", name="delPatient")
+     * @Route("/user/supprimerPatient/{id}", name="delPatient")
      * @return Response
      */
     public function delPatient($id):Response 
@@ -104,7 +104,7 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/user/séjoursPatient?id={id}&name={lastname}&firstname={firstname}", name="staysPatient")
+     * @Route("/user/séjoursPatient/{id}/{lastname}/{firstname}", name="staysPatient")
      * @param Request $request
      * @return Response
      */

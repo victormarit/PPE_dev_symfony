@@ -111,7 +111,7 @@ class HospitalController extends AbstractController
     }
 
     /**
-     * @Route("/admin/ajouterLit?id={id}&name={name}&room={room}", name="addBed")
+     * @Route("/admin/ajouterLit/{id}/{name}/{room}", name="addBed")
      * @param Request $request
      * @return Response
      */
