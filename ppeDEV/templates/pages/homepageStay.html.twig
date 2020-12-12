@@ -39,9 +39,15 @@
             <tbody>
             <tr>
                 <th scope="row">{{ num }}</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ stay.lastname }}</td>
+                <td>{{ stay.firstname }}</td>
+                <td>{{ stay.serviceName }}</td>
+                <td>{{ stay.roomNumber }}</td>
+                <td>{{ stay.bedNumber }}</td>
+                <td>{{ stay.entryDate|date('d/m/Y H:i') }}</td>
+                <td>{{ stay.leaveDate|date('d/m/Y H:i') }}</td>
+                <td>{{ stay.duration }}</td>
+                <td>{{ stay.creationDate|date('d/m/Y H:i') }}</td>
             </tr>
             </tbody>
         {% endfor %}
