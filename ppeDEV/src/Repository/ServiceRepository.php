@@ -58,6 +58,7 @@ class ServiceRepository extends ServiceEntityRepository
         LEFT JOIN hospital_room ON service.id = hospital_room.id_service_id
         LEFT JOIN bed ON hospital_room.id = bed.id_hospital_room_id
         GROUP BY service.id
+        ORDER BY service.name
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute();

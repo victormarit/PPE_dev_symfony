@@ -23,7 +23,7 @@ class HospitalController extends AbstractController
         $services = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
-            20//nombre d'élements par page 
+            10//nombre d'élements par page 
         );
         return $this->render('admin/hospital/homepageHospital.html.twig', [
             'services' => $services
