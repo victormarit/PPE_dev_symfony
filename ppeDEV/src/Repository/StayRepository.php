@@ -105,4 +105,17 @@ class StayRepository extends ServiceEntityRepository
 
         return $stmt->fetchAllAssociative();
     }
+
+    public function AddStayPatient($bed, $id, $entry, $leave, $creation)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+            INSERT INTO stay 
+            (id_bed_id, id_patient_id, entry_date, leave_date, creation_date)
+            VALUES
+            (:bed, :idPatient, :entry, :leave, :creation)
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["bed" => $bed, "idPatient" => $id, "entry" => $entry, "leave" => $leave, "creation" => $creation]);
+    }
 }

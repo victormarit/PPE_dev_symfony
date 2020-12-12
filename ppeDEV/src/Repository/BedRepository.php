@@ -47,4 +47,24 @@ class BedRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findBedsAndRooms($serviceId, $entryDate, $leaveDate): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+        SELECT bed.id bed
+        FROM service, hospital_room, bed
+        WHERE service.id = :idService
+        AND service.id = hospital_room.id_service_id
+        AND hospital_room.id = bed.id_hospital_room_id
+        AND bed.id NOT IN ( 
+            SELECT stay.id_bed_id FROM stay 
+            WHERE stay.entry_date BETWEEN :entryDate AND :leaveDate
+            OR stay.leave_date BETWEEN :entryDate AND :leaveDate)
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["idService" => $serviceId, "entryDate" => $entryDate, "leaveDate" => $leaveDate]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

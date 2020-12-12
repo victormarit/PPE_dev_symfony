@@ -21,11 +21,9 @@ class StayController extends AbstractController
     {
         if(isset($_GET['search'])){
             $donnees  = $this->getDoctrine()->getRepository(Stay::class)->findStays($_GET['search']);
-            dump($donnees);
         }
         else {
             $donnees  = $this->getDoctrine()->getRepository(Stay::class)->findAllStays();
-            dump($donnees);
         }
         $stays = $paginator->paginate(
             $donnees,
@@ -62,10 +60,8 @@ class StayController extends AbstractController
 
     /**
      * @Route("/user/supprimerSéjour/{id}", name="delStay")
-     * @param Request $request
-     * @return Response
      */
-    public function delStay(Request $request, $id):Response 
+    public function delStay($id):Response 
     {
         $stay = $this->getDoctrine()->getRepository(Stay::class)->findOneBy(['id' => $id]);
         $em = $this->getDoctrine()->getManager();

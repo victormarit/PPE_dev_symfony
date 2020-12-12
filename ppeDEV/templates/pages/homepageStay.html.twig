@@ -52,7 +52,15 @@
             </tbody>
         {% endfor %}
     </table>
+    
     {{ knp_pagination_render(stays) }}
+    
+    <div class="card ml-2 mr-2" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Ajouter un séjour</h5>
+            <a href="{{ path('addStay') }}" class="btn btn-primary">Ajouter</a>
+        </div>
+    </div>
 
 
 

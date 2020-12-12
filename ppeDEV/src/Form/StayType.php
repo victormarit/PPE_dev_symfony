@@ -16,10 +16,11 @@ class StayType extends AbstractType
     {
         $builder
             ->add('entryDate', DateTimeType::class, [
-                "label" => "date de sortie",
+                "label" => "Date d'entré ",
                 "attr" => [
                     "class" => "form-control"
-                ]
+                ],
+                "widget" => "single_text"
             ])
             ->add('leaveDate', TextType::class, [
                 "label" => "date départ",

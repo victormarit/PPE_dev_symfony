@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="../css/searchBar.css">
+    <link rel="stylesheet" href="../css/homepage.css">
+{% endblock %}
+
+
+{% block title %}Nouveau séjour{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {% if fail is defined %}
+        <div class="alert alert-danger">Aucun lit disponible pour ces dates</div>
+    {% endif %}
+    {% if pb is defined %}
+        <div class="alert alert-danger">Les dates saisies ne sont pas cohérentes</div>
+    {% endif %}
+    <div>
+        <form action="{{ path('addStayPatient', {'id': idPatient, 'lastname': lastname, 'firstname': firstname}) }}" method="POST">
+            <div class="form-group">
+                <label for="date1">Date de début</label>
+                <input type="datetime-local" class="form-control" id="date1"  name="date1" required >
+            </div>
+            <div class="form-group">
+                <label for="date2">Date de fin</label>
+                <input type="datetime-local" class="form-control" id="date2"  name="date2" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Service</label>
+                      <select class="form-control" id="service" name="service" required>
+                          {% for service in services %}
+                              <option value={{ service.id }}>{{ service.name }}</option>
+                          {% endfor %}
+                      </select>
+            </div>
+            <input type="submit" value="Ajouter">
+        </form>
+    </div>
+
+{% endblock %}

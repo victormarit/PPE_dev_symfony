@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Bed;
 use App\Entity\Patient;
+use App\Entity\Service;
 use App\Entity\Staff;
 use App\Entity\Stay;
 use App\Form\PatientType;
@@ -122,13 +124,63 @@ class PatientController extends AbstractController
         $stays = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
-            5//nombre d'élements par page 
+            10//nombre d'élements par page 
         );
-        dump($stays);
         return $this->render('pages/historyStay.html.twig',[
             "stays" => $stays,
             "lastname" => $lastname,
             "firstname" => $firstname
         ]); 
+    }
+
+    /**
+     * @Route("/user/nouveauSéjour/{id}/{lastname}/{firstname}", name="newStay")
+     */
+    public function newStay($id, $firstname, $lastname):Response 
+    {
+        $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+        return $this->render('pages/patientStay.html.twig', [
+            'services' => $data,
+            'idPatient' => $id,
+            "firstname" => $firstname, 
+            "lastname" => $lastname
+        ]); 
+    }
+
+    /**
+     * @Route("/user/addStay/{id}/{lastname}/{firstname}", name="addStayPatient")
+     */
+    public function addStayPatient( $id, $firstname, $lastname): Response
+    {
+        if(isset($_POST['date1']) && isset($_POST['date2']) && isset($_POST['service'])){
+            if($_POST['date1']<$_POST['date2']){
+                date_default_timezone_set('Europe/Paris');
+                $currentDate = date("Y-m-d h:i:sa");
+                $beds = $this->getDoctrine()->getRepository(Bed::class)->findBedsAndRooms($_POST['service'], $_POST['date1'], $_POST['date2']);
+                if(count($beds)>0){
+                    $this->getDoctrine()->getRepository(Stay::class)->AddStayPatient($beds[0]['bed'], $id , $_POST['date1'], $_POST['date2'], $currentDate);
+                
+                    return $this->redirectToRoute('staysPatient', ["id" => $id, "firstname" => $firstname,"lastname" => $lastname ]);
+                }
+            }
+            else{
+                $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+                return $this->render('pages/patientStay.html.twig', [
+                    'services' => $data,
+                    'idPatient' => $id,
+                    "firstname" => $firstname, 
+                    "lastname" => $lastname,
+                    "pb" => true
+                ]);  
+            }            
+        }
+        $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+        return $this->render('pages/patientStay.html.twig', [
+            'services' => $data,
+            'idPatient' => $id,
+            "firstname" => $firstname, 
+            "lastname" => $lastname,
+            "fail" => true
+        ]);  
     }
 }
