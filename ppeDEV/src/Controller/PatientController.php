@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Patient;
+use App\Entity\Staff;
 use App\Entity\Stay;
 use App\Form\PatientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,13 @@ class PatientController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
-        $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy([], ['id'=>'desc']);
+        if(isset($_GET['search'])){
+            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findPatients($_GET['search']);
+        }
+        else {
+            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy([], ['id'=>'desc']);
+        }
+
         $patients = $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1

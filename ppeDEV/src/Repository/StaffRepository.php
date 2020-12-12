@@ -36,22 +36,17 @@ class StaffRepository extends ServiceEntityRepository implements PasswordUpgrade
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return Staff[] Returns an array of Staff objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findStaffs($value)
     {
+        $search = "%".$value."%";
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('s.login LIKE :val')
+            ->setParameter('val', $search)
+            ->orderBy('s.login', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Staff

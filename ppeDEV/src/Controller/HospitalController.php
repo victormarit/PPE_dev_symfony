@@ -6,6 +6,7 @@ use App\Entity\HospitalRoom;
 use App\Entity\Service;
 use App\Form\HospitalRoomType;
 use App\Form\ServiceType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,13 @@ class HospitalController extends AbstractController
      */
     public function homepageHospital(Request $request, PaginatorInterface $paginator)
     {
-        $data = $this->getDoctrine()->getRepository(Service::class)->FindServices();
+        if(isset($_GET['service'])){
+            $data = $this->getDoctrine()->getRepository(Service::class)->FindServicesQuery($_GET['service']);
+        }
+        else {
+            $data = $this->getDoctrine()->getRepository(Service::class)->FindServices();
+        }
+        
         $services = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1

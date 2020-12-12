@@ -1,0 +1,8 @@
+<div class="search">
+    {% include 'composants/menu.html.twig' %}
+
+  <form action="{{ path( 'homepagePatient' ) }}" method="GET">
+    <input type="text" placeholder="Rechercher" name="search" id="search" class="form-control searchBar mr-2">
+    <input type="submit" value="Rechercher" class="btn btn-lg btn-primary">
+  </form>
+</div>

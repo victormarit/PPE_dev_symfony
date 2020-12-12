@@ -19,11 +19,16 @@ class StaffController extends AbstractController
      */
     public function homepageStaff(Request $request, PaginatorInterface $paginator)
     {
-        $donnees  = $this->getDoctrine()->getRepository(Staff::class)->findBy([], ['id'=>'desc']);
+        if(isset($_GET['staff'])){
+            $donnees  = $this->getDoctrine()->getRepository(Staff::class)->findStaffs($_GET['staff']);
+        }
+        else {
+            $donnees  = $this->getDoctrine()->getRepository(Staff::class)->findBy([], ['id'=>'desc']);
+        }
         $staff = $paginator->paginate(
             $donnees,
-            $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
-            9//nombre d'élements par page 
+            $request->query->getInt('page', 1),
+            10
         );
         return $this->render('admin/homepageAdmin.html.twig', [
             'staffs' => $staff

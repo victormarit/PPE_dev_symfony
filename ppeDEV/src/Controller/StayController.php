@@ -19,11 +19,18 @@ class StayController extends AbstractController
      */
     public function homepageStay(Request $request, PaginatorInterface $paginator)
     {
-        $donnees  = $this->getDoctrine()->getRepository(Stay::class)->findBy([], ['id'=>'desc']);
+        if(isset($_GET['search'])){
+            $donnees  = $this->getDoctrine()->getRepository(Stay::class)->findStays($_GET['search']);
+            dump($donnees);
+        }
+        else {
+            $donnees  = $this->getDoctrine()->getRepository(Stay::class)->findAllStays();
+            dump($donnees);
+        }
         $stays = $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
-            9//nombre d'élements par page 
+            10//nombre d'élements par page
         );
         return $this->render('pages/homepageStay.html.twig', [
             'stays' => $stays
@@ -54,7 +61,7 @@ class StayController extends AbstractController
     }
 
     /**
-     * @Route("/user/supprimerSéjour?id={id}", name="delStay")
+     * @Route("/user/supprimerSéjour/{id}", name="delStay")
      * @param Request $request
      * @return Response
      */

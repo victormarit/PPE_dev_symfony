@@ -63,4 +63,42 @@ class StayRepository extends ServiceEntityRepository
 
         return $stmt->fetchAllAssociative();
     }
+
+    public function findAllStays(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+        SELECT patient.first_name firstname, patient.last_name lastname, stay.entry_date entryDate, stay.leave_date leaveDate, stay.creation_date creationDate, bed.number bedNumber, hospital_room.number roomNumber, service.name serviceName
+        from stay, patient, bed, hospital_room, service
+        where stay.id_patient_id = patient.id
+        and stay.id_bed_id = bed.id
+        and bed.id_hospital_room_id = hospital_room.id
+        and hospital_room.id_service_id = service.id
+        ORDER BY stay.creation_date DESC
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function findStays($var): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $search = "%".$var."%";
+        $sql = '
+        SELECT patient.first_name firstname, patient.last_name lastname, stay.entry_date entryDate, stay.leave_date leaveDate, stay.creation_date creationDate, bed.number bedNumber, hospital_room.number roomNumber, service.name serviceName
+        from stay, patient, bed, hospital_room, service
+        where stay.id_patient_id = patient.id
+        and stay.id_bed_id = bed.id
+        and (patient.last_name LIKE :val or patient.first_name LIKE :val)
+        and bed.id_hospital_room_id = hospital_room.id
+        and hospital_room.id_service_id = service.id
+        ORDER BY stay.creation_date DESC
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['val' => $search]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

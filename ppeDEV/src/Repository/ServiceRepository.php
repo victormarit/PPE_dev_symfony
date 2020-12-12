@@ -65,4 +65,23 @@ class ServiceRepository extends ServiceEntityRepository
 
         return $stmt->fetchAllAssociative();
     }
+
+    public function FindServicesQuery($query): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $search = "%".$query."%";
+        $sql = '
+        Select service.id, service.name, Count(DISTINCT bed.id) bed 
+        From service 
+        LEFT JOIN hospital_room ON service.id = hospital_room.id_service_id
+        LEFT JOIN bed ON hospital_room.id = bed.id_hospital_room_id
+        WHERE service.name LIKE :query
+        GROUP BY service.id
+        ORDER BY service.name
+        ';;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['query' => $search]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }
