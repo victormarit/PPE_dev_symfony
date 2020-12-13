@@ -164,17 +164,33 @@ class StayController extends AbstractController
                     $patientId = $stay->getIdPatient();
                     $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $patientId->getId()]);;
                     $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-                    return $this->render('user/stay/updateStay.html.twig', [
-                        'services' => $data,
-                        'idPatient' => $patient->getId(),
-                        "firstname" => $patient->getFirstName(),
-                        "lastname" => $patient->getLastName(),
-                        "entryDate" => $stay->getEntryDate(),
-                        "leaveDate" => $stay->getLeaveDate(),
-                        'serviceId' => $serviceId,
-                        "idStay" => $stay->getId(),
-                        "pb2" => $date[0]["leave"]
-                    ]);
+                    if(count($date)>0){
+                        return $this->render('user/stay/updateStay.html.twig', [
+                            'services' => $data,
+                            'idPatient' => $patient->getId(),
+                            "firstname" => $patient->getFirstName(),
+                            "lastname" => $patient->getLastName(),
+                            "entryDate" => $stay->getEntryDate(),
+                            "leaveDate" => $stay->getLeaveDate(),
+                            'serviceId' => $serviceId,
+                            "idStay" => $stay->getId(),
+                            "pb2" => $date[0]["leave"]
+                        ]);
+                    }
+                    else {
+                        return $this->render('user/stay/updateStay.html.twig', [
+                            'services' => $data,
+                            'idPatient' => $patient->getId(),
+                            "firstname" => $patient->getFirstName(),
+                            "lastname" => $patient->getLastName(),
+                            "entryDate" => $stay->getEntryDate(),
+                            "leaveDate" => $stay->getLeaveDate(),
+                            'serviceId' => $serviceId,
+                            "idStay" => $stay->getId(),
+                            "pb3" => 0
+                        ]);
+                    }
+                    
                 }
             }
             else{

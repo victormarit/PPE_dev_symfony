@@ -101,15 +101,33 @@ class PatientController extends AbstractController
     /**
      * @Route("/user/supprimerPatient/{id}", name="delPatient")
      * @return Response
+     * @param Request $request
      */
-    public function delPatient($id):Response 
+    public function delPatient($id, PaginatorInterface $paginator, Request $request):Response 
     {
+
         $user = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
-           
-        return $this->redirectToRoute('homepagePatient'); 
+        $stays = $user->getStays();
+        if(count($stays)==0){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($user);
+            $em->flush();
+               
+            return $this->redirectToRoute('homepagePatient'); 
+        }
+        else{
+            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy([], ['id'=>'desc']);
+            $patients = $paginator->paginate(
+                $donnees,
+                $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
+                9//nombre d'élements par page 
+            );
+            return $this->render('user/patient/homepage.html.twig', [
+                'patients' => $patients,
+                'erreur' => true
+            ]);
+        }
+
     }
 
     /**
@@ -166,13 +184,31 @@ class PatientController extends AbstractController
                     //A améliorer 
                     $date = $this->getDoctrine()->getRepository(Stay::class)->nextAvailability($_POST['service']);                    
                     $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-                    return $this->render('user/stay/showStay.html.twig', [
-                        'services' => $data,
-                        'idPatient' => $id,
-                        "firstname" => $firstname, 
-                        "lastname" => $lastname,
-                        "pb2" => $date[0]["leave"]
-                    ]);
+                    if(count($date)>0){
+                        return $this->render('user/stay/showStay.html.twig', [
+                            'services' => $data,
+                            'idPatient' => $id,
+                            "firstname" => $firstname, 
+                            "lastname" => $lastname,
+                            "pb2" => $date[0]["leave"],
+                            "entryDate" => $_POST["date1"],
+                            "leaveDate" => $_POST["date2"],
+                            "serviceId" => $_POST['service']
+                        ]);
+                    }
+                    else{
+                        return $this->render('user/stay/showStay.html.twig', [
+                            'services' => $data,
+                            'idPatient' => $id,
+                            "firstname" => $firstname, 
+                            "lastname" => $lastname,
+                            "pb3" => 0,
+                            "entryDate" => $_POST["date1"],
+                            "leaveDate" => $_POST["date2"],
+                            "serviceId" => $_POST['service']
+                        ]);
+                    }
+                    
                 }
             }
             else{
@@ -182,7 +218,10 @@ class PatientController extends AbstractController
                     'idPatient' => $id,
                     "firstname" => $firstname, 
                     "lastname" => $lastname,
-                    
+                    "pb" => 0,
+                    "entryDate" => $_POST["date1"],
+                    "leaveDate" => $_POST["date2"],
+                    "serviceId" => $_POST['service']
                 ]);  
             }            
         }

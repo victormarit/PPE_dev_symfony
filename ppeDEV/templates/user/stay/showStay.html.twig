@@ -17,23 +17,26 @@
         <div class="alert alert-danger">Les dates saisies ne sont pas cohérentes</div>
     {% endif %}
     {% if pb2 is defined %}
-        <div class="alert alert-danger">Aucune place disponile avant le {{ pb2|date('d/m/Y H:i') }}</div>
+        <div class="alert alert-danger">Aucune place disponible avant le {{ pb2|date('d/m/Y H:i') }}</div>
+    {% endif %}
+    {% if pb3 is defined %}
+        <div class="alert alert-danger">Aucune place disponible pour le moment dans ce service</div>
     {% endif %}
     <div>
         <form action="{{ path('addStayPatient', {'id': idPatient, 'lastname': lastname, 'firstname': firstname}) }}" method="POST">
             <div class="form-group">
                 <label for="date1">Date de début</label>
-                <input type="datetime-local" class="form-control" id="date1"  name="date1" required >
+                <input type="datetime-local" class="form-control" id="date1"  name="date1" {% if entryDate is defined %} value="{{ entryDate|date('Y-m-d\\TH:i') }}" {% endif %} required >
             </div>
             <div class="form-group">
                 <label for="date2">Date de fin</label>
-                <input type="datetime-local" class="form-control" id="date2"  name="date2" required>
+                <input type="datetime-local" class="form-control" id="date2"  name="date2" {% if leaveDate is defined %} value="{{ leaveDate|date('Y-m-d\\TH:i') }}" {% endif %} required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Service</label>
                       <select class="form-control" id="service" name="service" required>
                           {% for service in services %}
-                              <option value={{ service.id }}>{{ service.name }}</option>
+                               <option value={{ service.id }} {% if  serviceId is defined and serviceId == service.id %} selected {% endif %}>{{ service.name }}</option>
                           {% endfor %}
                       </select>
             </div>
