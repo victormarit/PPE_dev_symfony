@@ -2,10 +2,11 @@
 
 namespace App\tests;
 
+use App\Entity\Staff;
 use App\Repository\StaffRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class StaffControllerTest extends WebTestCase 
+class StaffControllerTest extends WebTestCase
 {
     //tests fonctionnels route homepageStaff
     public function testGetHomepageStaffRole_User(){
@@ -44,17 +45,29 @@ class StaffControllerTest extends WebTestCase
     //tests fonctionnels route updateNewStaffMember
     public function testGetUpdateStaffRole_User(){
         $client = SecurityControllerTest::getUserClient();
-        $client->request('GET', '/admin/modifierStaffMember/5');
+        $container = self::$container;
+        $em = $container->get('doctrine.orm.entity_manager');
+        /** @var Staff $staff */
+        $staff = $em->getRepository('App:Staff')->findOneBy(['firstName' => 'Victor']);
+        $client->request('GET', '/admin/modifierStaffMember/' . $staff->getId());
         $this->assertResponseStatusCodeSame(403);
     }
     public function testGetUpdateStaffRole_Admin(){
         $client = SecurityControllerTest::getAdminClient();
-        $client->request('GET', '/admin/modifierStaffMember/5');
+        $container = self::$container;
+        $em = $container->get('doctrine.orm.entity_manager');
+        /** @var Staff $staff */
+        $staff = $em->getRepository('App:Staff')->findOneBy(['firstName' => 'Victor']);
+        $client->request('GET', '/admin/modifierStaffMember/' . $staff->getId());
         $this->assertResponseStatusCodeSame(200);
     }
     public function testGetUpdateStaffWithoutConnection(){
         $client = static::createClient();
-        $client->request('GET', '/admin/modifierStaffMember/5');
+        $container = self::$container;
+        $em = $container->get('doctrine.orm.entity_manager');
+        /** @var Staff $staff */
+        $staff = $em->getRepository('App:Staff')->findOneBy(['firstName' => 'Victor']);
+        $client->request('GET', '/admin/modifierStaffMember/' . $staff->getId());
         $this->assertResponseStatusCodeSame(302);
     }
-} 
+}
