@@ -28,6 +28,7 @@
             <th scope="col">Date de sortie</th>
             <th scope="col">Durée du séjour</th>
             <th scope="col">Date de création</th>
+            <th scope="col">Commandes</th>
 
         </tr>
         </thead>
@@ -48,6 +49,10 @@
                 <td>{{ stay.leaveDate|date('d/m/Y H:i') }}</td>
                 <td>{{ stay.duration }}</td>
                 <td>{{ stay.creationDate|date('d/m/Y H:i') }}</td>
+                <td>
+                    <a href="{{ path( 'updateStay',  {'id': stay.id, 'serviceId': stay.serviceId} ) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path( 'delStay',  {'id': stay.id} ) }}" class="btn btn-info">Supprimer</a>
+                </td>
             </tr>
             </tbody>
         {% endfor %}

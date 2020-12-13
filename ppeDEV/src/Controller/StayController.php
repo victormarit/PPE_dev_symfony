@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Patient;
+use App\Entity\Service;
 use App\Entity\Stay;
 use App\Form\StayType;
 use Symfony\Component\Routing\Annotation\Route;
@@ -69,5 +71,28 @@ class StayController extends AbstractController
         $em->flush();
            
         return $this->redirectToRoute('homepageStay'); 
+    }
+
+    /**
+     * @Route("/user/modifierSéjour/{id}/{serviceId}", name="updateStay")
+     */
+    public function updateStay($id, $serviceId):Response 
+    {
+        $stay = $this->getDoctrine()->getRepository(Stay::class)->findOneBy(['id' => $id]);
+        $patientId = $stay->getIdPatient(); 
+        $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $patientId->getId()]);;
+        $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+        
+
+        dump($stay->getEntryDate());
+        return $this->render('pages/stay/updateStay.html.twig', [
+            'services' => $data,
+            'idPatient' => $patient->getId(),
+            "firstname" => $patient->getFirstName(), 
+            "lastname" => $patient->getLastName(),
+            "entryDate" => $stay->getEntryDate(),
+            "leaveDate" => $stay->getLeaveDate(),
+            'service' => $serviceId
+        ]); 
     }
 }
