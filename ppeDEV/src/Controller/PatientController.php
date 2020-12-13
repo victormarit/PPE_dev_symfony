@@ -158,9 +158,22 @@ class PatientController extends AbstractController
                 $currentDate = date("Y-m-d h:i:sa");
                 $beds = $this->getDoctrine()->getRepository(Bed::class)->findBedsAndRooms($_POST['service'], $_POST['date1'], $_POST['date2']);
                 if(count($beds)>0){
+                    dd($beds);
                     $this->getDoctrine()->getRepository(Stay::class)->AddStayPatient($beds[0]['bed'], $id , $_POST['date1'], $_POST['date2'], $currentDate);
                 
                     return $this->redirectToRoute('staysPatient', ["id" => $id, "firstname" => $firstname,"lastname" => $lastname ]);
+                }
+                else{
+                    //A améliorer 
+                    $date = $this->getDoctrine()->getRepository(Stay::class)->nextAvailability($_POST['service']);                    
+                    $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+                    return $this->render('pages/patientStay.html.twig', [
+                        'services' => $data,
+                        'idPatient' => $id,
+                        "firstname" => $firstname, 
+                        "lastname" => $lastname,
+                        "pb2" => $date[0]["leave"]
+                    ]);
                 }
             }
             else{

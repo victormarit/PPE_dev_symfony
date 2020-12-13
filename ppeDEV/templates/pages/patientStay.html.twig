@@ -16,6 +16,9 @@
     {% if pb is defined %}
         <div class="alert alert-danger">Les dates saisies ne sont pas cohérentes</div>
     {% endif %}
+    {% if pb2 is defined %}
+        <div class="alert alert-danger">Aucune place disponile avant le {{ pb2|date('d/m/Y H:i') }}</div>
+    {% endif %}
     <div>
         <form action="{{ path('addStayPatient', {'id': idPatient, 'lastname': lastname, 'firstname': firstname}) }}" method="POST">
             <div class="form-group">

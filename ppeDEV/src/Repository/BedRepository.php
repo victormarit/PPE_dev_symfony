@@ -58,13 +58,16 @@ class BedRepository extends ServiceEntityRepository
         AND service.id = hospital_room.id_service_id
         AND hospital_room.id = bed.id_hospital_room_id
         AND bed.id NOT IN ( 
-            SELECT stay.id_bed_id FROM stay 
-            WHERE stay.entry_date BETWEEN :entryDate AND :leaveDate
-            OR stay.leave_date BETWEEN :entryDate AND :leaveDate)
+            SELECT stay.id_bed_id 
+            FROM stay 
+            WHERE :entryDate BETWEEN stay.entry_date AND stay.leave_date 
+            OR :leaveDate BETWEEN stay.entry_date AND stay.leave_date)
         ";
         $stmt = $conn->prepare($sql);
         $stmt->execute(["idService" => $serviceId, "entryDate" => $entryDate, "leaveDate" => $leaveDate]);
 
         return $stmt->fetchAllAssociative();
     }
+
+
 }

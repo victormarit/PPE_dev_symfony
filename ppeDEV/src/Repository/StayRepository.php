@@ -118,4 +118,22 @@ class StayRepository extends ServiceEntityRepository
         $stmt = $conn->prepare($sql);
         $stmt->execute(["bed" => $bed, "idPatient" => $id, "entry" => $entry, "leave" => $leave, "creation" => $creation]);
     }
+
+    public function nextAvailability($serviceId): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+        SELECT stay.leave_date as 'leave'
+        FROM stay, bed, hospital_room,service 
+        WHERE stay.id_bed_id = bed.id 
+        AND bed.id_hospital_room_id = hospital_room.id 
+        AND service.id = hospital_room.id_service_id 
+        AND service.id = :service 
+        ORDER BY stay.leave_date DESC
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["service" => $serviceId]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }
