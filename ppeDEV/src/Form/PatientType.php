@@ -38,7 +38,8 @@ class PatientType extends AbstractType
                 "label" => "Date de naissance",
                 "attr" => [
                     "class" => "form-control"
-                ]
+                ],
+                "widget" => "single_text"
             ])
             ->add('bloodType', ChoiceType::class, [
                 "label" => "Groupe Sanguin",

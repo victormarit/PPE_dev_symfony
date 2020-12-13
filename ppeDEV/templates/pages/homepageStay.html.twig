@@ -7,6 +7,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/deleteAlert.js') }}" defer></script>
+    <script src="{{ asset('js/addAlert.js') }}" defer></script>
 {% endblock %}
 
 
@@ -67,7 +68,7 @@
     <div class="card ml-2 mr-2" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">Ajouter un séjour</h5>
-            <a href="{{ path('addStay') }}" class="btn btn-primary">Ajouter</a>
+            <a href="{{ path('homepagePatient') }}" class="btn btn-primary add">Ajouter</a>
         </div>
     </div>
 
@@ -83,6 +84,23 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalAlertNon">Non</button>
                     <button type="button" class="btn btn-primary" id="modalAlertOui">Oui</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalAddAlert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Information</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Le patient existe t-il déjà ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalAddAlertNon">Non</button>
+                    <button type="button" class="btn btn-primary" id="modalAddAlertOui">Oui</button>
                 </div>
             </div>
         </div>
