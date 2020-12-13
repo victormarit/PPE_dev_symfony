@@ -1,10 +1,21 @@
 .search{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin: 2em;
+    max-width: 100%;
 }
 .searchBar{
     width: 25em;
+}
+
+.forsearch{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
 }
