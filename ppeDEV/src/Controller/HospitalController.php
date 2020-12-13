@@ -55,7 +55,7 @@ class HospitalController extends AbstractController
             return $this->redirectToRoute('homepageHospital'); 
         }
         
-        return $this->render('admin/hospital/addService.html.twig', [
+        return $this->render('admin/hospital/service/addService.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -78,7 +78,7 @@ class HospitalController extends AbstractController
             return $this->redirectToRoute('homepageHospital'); 
         }
         
-        return $this->render('admin/hospital/addService.html.twig', [
+        return $this->render('admin/hospital/service/addService.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -110,7 +110,7 @@ class HospitalController extends AbstractController
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
             10//nombre d'élements par page 
         );
-        return $this->render('admin/hospital/service.html.twig', [
+        return $this->render('admin/hospital/service/showService.html.twig', [
             'rooms' => $rooms,
             'service' => $name,
             'id' => $id
@@ -189,7 +189,7 @@ class HospitalController extends AbstractController
             return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
         }
         
-        return $this->render('admin/hospital/addRoom.html.twig', [
+        return $this->render('admin/hospital/room/addRoom.html.twig', [
             "form" => $form->createView(),
         ]); 
     }
@@ -235,7 +235,7 @@ class HospitalController extends AbstractController
             return $this->redirectToRoute('manageService', ["id" => $id, "name" => $name]); 
         }
         
-        return $this->render('admin/hospital/addRoom.html.twig', [
+        return $this->render('admin/hospital/room/addRoom.html.twig', [
             "form" => $form->createView(),
         ]); 
     }
