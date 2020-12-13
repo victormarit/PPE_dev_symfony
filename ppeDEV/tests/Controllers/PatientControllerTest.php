@@ -91,4 +91,6 @@ class PatientControllerTest extends WebTestCase
         $client->request('GET', '/user/nouveauSéjour/1/{lastname}/{firstname}');
         $this->assertResponseStatusCodeSame(302);
     }
+
+}
 }

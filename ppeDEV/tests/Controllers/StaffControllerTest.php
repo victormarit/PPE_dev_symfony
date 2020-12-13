@@ -44,17 +44,17 @@ class StaffControllerTest extends WebTestCase
     //tests fonctionnels route updateNewStaffMember
     public function testGetUpdateStaffRole_User(){
         $client = SecurityControllerTest::getUserClient();
-        $client->request('GET', '/admin/modifierStaffMember/1');
+        $client->request('GET', '/admin/modifierStaffMember/5');
         $this->assertResponseStatusCodeSame(403);
     }
     public function testGetUpdateStaffRole_Admin(){
         $client = SecurityControllerTest::getAdminClient();
-        $client->request('GET', '/admin/modifierStaffMember/1');
+        $client->request('GET', '/admin/modifierStaffMember/5');
         $this->assertResponseStatusCodeSame(200);
     }
     public function testGetUpdateStaffWithoutConnection(){
         $client = static::createClient();
-        $client->request('GET', '/admin/modifierStaffMember/1');
+        $client->request('GET', '/admin/modifierStaffMember/5');
         $this->assertResponseStatusCodeSame(302);
     }
 } 
