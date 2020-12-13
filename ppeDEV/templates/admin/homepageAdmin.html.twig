@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="../css/searchBar.css">
-    <link rel="stylesheet" href="../css/homepage.css">
+    <link rel="stylesheet" href="{{asset("css/searchBar.css")}}">
+    <link rel="stylesheet" href="{{asset("css/homepage.css")}}">
 {% endblock %}
 
 {% block javascripts %}
@@ -16,22 +16,22 @@
     {% include 'composants/header.html.twig' %}
     {% include 'composants/searchbarStaff.html.twig' %}
 
-    <div class = "alignCards">
+    <div class = "alignCards d-flex flex-wrap">
         {% for staff in staffs %}
-            <div class="card ml-2 mr-2" style="width: 18rem;">
-                <div class="card-body">
+            <div class="card mx-2 my-2" style="width: 18rem;">
+                <div class="card-body text-center">
                     <h5 class="card-title">{{ staff.firstName }} {{ staff.lastName }}</h5>
-                    <p class="card-text"><strong>Numéro de sécurité sociale :</strong> {{ staff.roles[0] }}</p>
-                    <a href="{{ path( 'updateStaff',  {'id': staff.id} ) }}" class="btn btn-primary">Modifier</a>
-                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger delete">Supprimer</a>
+                    <p class="card-text"><a class ="font-weight-bold">Rôle :<br></a> {% if staff.roles[0] == "ROLE_ADMIN" %} Administrateur {% else %} Personnel {% endif %}</p>
+                    <a href="{{ path( 'updateStaff',  {'id': staff.id} ) }}" class="btn btn-primary w-100 mb-2"><i class="fas fa-user-edit"></i> Détails</a>
+                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger w-100 mb-2"><i class="fas fa-user-slash"></i> Supprimer</a>
                 </div>
             </div>
         {% endfor %}
-
-        <div class="card ml-2 mr-2" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Créer un salarié</h5>
-                <a href="{{ path( 'createNewStaffMember') }}" class="btn btn-primary">Ajouter</a>
+        <div class="card ml-2 mr-2 d-flex flex-column" style="width: 18rem;">
+            <div class="card-body text-center d-flex flex-column">
+                <div style="font-size: 17.8px;">
+                    <a href="{{ path( 'createNewStaffMember') }}"><i class=" my-5 fas fa-user-plus fa-6x"></i></a>
+                </div>
             </div>
         </div>
 

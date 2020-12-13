@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Staff;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -19,7 +20,10 @@ class StaffType extends AbstractType
     {
         $builder
             ->add('login', TextType::class, [
-                "label" => "Login",
+                "label" => "Identifiant :",
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
+                ],
                 "attr" => [
                     "class" => "form-control"
                 ]
@@ -28,7 +32,10 @@ class StaffType extends AbstractType
                 "attr" => [
                     "class" => "form-control"
                 ],
-                'label'=>'Mot de passe',
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
+                ],
+                'label'=>'Mot de passe :',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Entrer un mot de passe',
@@ -41,29 +48,56 @@ class StaffType extends AbstractType
                 ],
             ])
             ->add('firstName', TextType::class, [
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
+                ],
                 "attr" => [
                     "class" => "form-control"
                 ],
-                'label'=>'Prénom'
+                'label'=>'Prénom :'
             ])
             ->add('lastName', TextType::class, [
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
+                ],
                 "attr" => [
                     "class" => "form-control"
                 ],
-                'label'=>'Nom'
+                'label'=>'Nom :'
             ])
         
             ->add('roles', ChoiceType::class, [
-                "label" => 'Rôle',
+                "label" => 'Rôle :',
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
+                ],
+                "attr" => [
+                    "class" => "form-control"
+                ],
                 'choices'  => [
                     'Utilisateur' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
-                'multiple' => true,
-                'expanded' => true
+                'multiple' => false,
+                'expanded' => false
             ])
-            ->add("Sauvegarder", SubmitType::class)
+            ->add("Sauvegarder", SubmitType::class, [
+                "attr" => [
+                    "class" => "btn btn-primary w-100"
+                ]
+            ])
         ;
+        $builder->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($rolesArray) {
+                    // transform the array to a string
+                    return count($rolesArray)? $rolesArray[0]: null;
+                },
+                function ($rolesString) {
+                    // transform the string back to an array
+                    return [$rolesString];
+                }
+            ));
     }
     public function configureOptions(OptionsResolver $resolver)
     {

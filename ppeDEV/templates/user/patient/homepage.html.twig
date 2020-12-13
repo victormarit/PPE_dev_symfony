@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("../css/searchBar.css")}}">
+    <link rel="stylesheet" href="{{asset("../css/homepage.css")}}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/deleteAlert.js') }}" defer></script>
+{% endblock %}
+
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="{{ asset("../css/searchBar.css" )}}">
+    <link rel="stylesheet" href="{{ asset("../css/homepage.css" )}}">
+
+    {% include 'composants/header.html.twig' %}
+    {% include 'composants/searchbarPatient.html.twig' %}
+
+    <div class = "alignCards d-flex flex-wrap">
+        {% for patient in patients %}
+            <div class="card mx-4 my-4" style="width: 20rem; height: 26rem">
+                <div class="card-body text-center">
+                    <h4 class="card-title h3  mb-3">{{ patient.firstName }} {{ patient.lastName }}</h4>
+                    <p class="card-text"><a class ="font-weight-bold">Numéro de sécurité sociale :</a> {{ patient.socialSecurityNumber }}</p>
+                    <a href="{{ path( 'updatePatient',  {'id': patient.id} ) }}" class="btn btn-primary w-100 mb-4"><i class="fas fa-user-edit"></i> Modifier</a>
+                    <a href="{{ path( 'staysPatient',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4">Historique Séjours</a>
+                    <a href="{{ path( 'newStay',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4">Nouveau Séjours</a>
+                    <a href="{{ path( 'delPatient',  {'id': patient.id} ) }}" class="btn btn-danger w-100 mb-2"><i class="fas fa-user-slash"></i> Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="card ml-2 mr-2 d-flex flex-column" style="width: 20rem; height: 26rem">
+            <div class="card-body text-center d-flex flex-column">
+                <div style="font-size: 24px;">
+                    <a href="{{ path( 'createPatient') }}"><i class=" my-5 mx-0 fas fa-user-plus fa-9x"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{ knp_pagination_render(patients) }}
+
+    <div class="modal" tabindex="-1" id="modalDeleteAlert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Attention</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûre de vouloir supprimer ce patient ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalAlertNon">Non</button>
+                    <button type="button" class="btn btn-primary" id="modalAlertOui">Oui</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

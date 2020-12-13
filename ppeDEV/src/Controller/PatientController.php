@@ -36,7 +36,7 @@ class PatientController extends AbstractController
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
             9//nombre d'élements par page 
         );
-        return $this->render('pages/homepage.html.twig', [
+        return $this->render('user/patient/homepage.html.twig', [
             'patients' => $patients
         ]);
     }
@@ -64,13 +64,13 @@ class PatientController extends AbstractController
             }
             else
             {
-                return $this->render('pages/addPatient.html.twig', [
+                return $this->render('user/patient/addPatient.html.twig', [
                     "form" => $form->createView(),
                     'error' => True
                 ]);
             } 
         }
-        return $this->render('pages/addPatient.html.twig', [
+        return $this->render('user/patient/addPatient.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -93,7 +93,7 @@ class PatientController extends AbstractController
             return $this->redirectToRoute('homepagePatient'); 
         }
         
-        return $this->render('pages/addPatient.html.twig', [
+        return $this->render('user/patient/addPatient.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -126,7 +126,7 @@ class PatientController extends AbstractController
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
             10//nombre d'élements par page 
         );
-        return $this->render('pages/historyStay.html.twig',[
+        return $this->render('user/patient/historyStay.html.twig',[
             "stays" => $stays,
             "lastname" => $lastname,
             "firstname" => $firstname
@@ -139,7 +139,7 @@ class PatientController extends AbstractController
     public function newStay($id, $firstname, $lastname):Response 
     {
         $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-        return $this->render('pages/patientStay.html.twig', [
+        return $this->render('user/stay/showStay.html.twig', [
             'services' => $data,
             'idPatient' => $id,
             "firstname" => $firstname, 
@@ -166,7 +166,7 @@ class PatientController extends AbstractController
                     //A améliorer 
                     $date = $this->getDoctrine()->getRepository(Stay::class)->nextAvailability($_POST['service']);                    
                     $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-                    return $this->render('pages/patientStay.html.twig', [
+                    return $this->render('user/stay/showStay.html.twig', [
                         'services' => $data,
                         'idPatient' => $id,
                         "firstname" => $firstname, 
@@ -177,7 +177,7 @@ class PatientController extends AbstractController
             }
             else{
                 $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-                return $this->render('pages/patientStay.html.twig', [
+                return $this->render('user/stay/showStay.html.twig', [
                     'services' => $data,
                     'idPatient' => $id,
                     "firstname" => $firstname, 
@@ -187,7 +187,7 @@ class PatientController extends AbstractController
             }            
         }
         $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-        return $this->render('pages/patientStay.html.twig', [
+        return $this->render('user/stay/showStay.html.twig', [
             'services' => $data,
             'idPatient' => $id,
             "firstname" => $firstname, 

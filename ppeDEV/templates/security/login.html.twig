@@ -1,16 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="css/login.css">
-{% endblock %}
-
-
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<form method="post">
-    <nav class = "navbar">
-        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+    <nav class = "navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand ml-4">Connexion</a>
     </nav>
 
     
@@ -26,30 +20,19 @@
 
 
 
-
-    <div class="form-row mt-5">
-        <div class="col-md-12 mb-3">
-            <div align="center">
+    <form method="post">
+    <div class="form mt-5" align="center">
+        <div class="mb-3 w-50">
+            <div class="w-100" align="center">
                 <div class="form-signin login">
-                    <label for="inputLogin">Login</label>
+                    <label for="inputLogin" class="h5">Identifiant:</label>
                     <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" required autofocus>
-                    <label for="inputPassword">Mot de passe</label>
+                    <label for="inputPassword" class="mt-4 h5">Mot de passe:</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                    {#
-                        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                        See https://symfony.com/doc/current/security/remember_me.html
-
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" name="_remember_me"> Remember me
-                            </label>
-                        </div>
-                    #}
-
-                    <button class="btn btn-lg btn-primary mt-3" type="submit">Connexion</button>
+                    <button type="submit" class="btn btn-primary mt-4 w-50">Valider</button>
                 </div>
             </div>
         </div>

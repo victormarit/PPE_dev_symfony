@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("../css/form.css")}}">
+{% endblock %}
+
+
+{% block title %}Nouvel Utilisateur{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    <div class="d-flex justify-content-center">
+        {{ form_start(form, {'attr':{'class':'w-75 d-flex flex-column'}} ) }}
+
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.login) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.roles) }}
+        <div class="mt-4 d-flex justify-content-center w-100 button">
+            {{ form_row(form.Sauvegarder) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

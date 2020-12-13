@@ -59,7 +59,7 @@ class StaffController extends AbstractController
             return $this->redirectToRoute('homepagePatient'); 
         }
         
-        return $this->render('admin/newStaffMember.html.twig', [
+        return $this->render('admin/staff/addStaff.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -97,7 +97,7 @@ class StaffController extends AbstractController
             return $this->redirectToRoute('homepagePatient'); 
         }
         
-        return $this->render('admin/newStaffMember.html.twig', [
+        return $this->render('admin/staff/addStaff.html.twig', [
             "form" => $form->createView()
         ]);
     }
