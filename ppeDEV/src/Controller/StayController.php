@@ -7,6 +7,7 @@ use App\Entity\Patient;
 use App\Entity\Service;
 use App\Entity\Staff;
 use App\Entity\Stay;
+use App\Form\PatientType;
 use App\Form\StayType;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
@@ -40,32 +41,40 @@ class StayController extends AbstractController
     }
 
     /**
-     * @Route("/user/creationSejour", name="addStay")
+     * @Route("/user/creationPatientEtSejour", name="addStayAndPatient")
      * @param Request $request
      * @return Response
      */
-    public function addStay(Request $request):Response
+    public function addStayandPatient(Request $request):Response
     {
-        $stay = new Stay;
-        $form =  $this->createForm(StayType::class, $stay);
+        $user = new Patient;
+        $form =  $this->createForm(PatientType::class, $user);
         $form->handleRequest($request);
         
         if($form->isSubmitted()&& $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($stay);
-            $em->flush();
-            return $this->redirectToRoute('homepageStay'); 
+            //Vérifie le numéro de sécu pour être sur qu'il est bien unique. 
+            $test = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
+            if($test === null)
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+                return $this->redirectToRoute('newStay', ["id" => $user->getId(), "lastname" => $user->getLastName(), "firstname"=> $user->getFirstName()]); 
+            }
+            else
+            {
+                return $this->render('pages/addPatient.html.twig', [
+                    "form" => $form->createView(),
+                    'error' => True
+                ]);
+            } 
         }
-        
-        return $this->render('pages/addStay.html.twig', [
-            "form" => $form->createView()
-        ]);
     }
 
     /**
      * @Route("/user/supprimerSéjour/{id}", name="delStay")
      */
-    public function delStay($id):Response 
+    public function delStay($id): Response 
     {
         $stay = $this->getDoctrine()->getRepository(Stay::class)->findOneBy(['id' => $id]);
         $em = $this->getDoctrine()->getManager();
