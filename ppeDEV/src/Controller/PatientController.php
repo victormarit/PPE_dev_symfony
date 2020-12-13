@@ -119,7 +119,7 @@ class PatientController extends AbstractController
      */
     public function staysPatient(Request $request, $id, PaginatorInterface $paginator, $lastname, $firstname):Response 
     {
-        $data = $this->getDoctrine()->getRepository(Stay::class)->FindUserStays($id); //On peut passer par une requête SQL pour améliorer le système
+        $data = $this->getDoctrine()->getRepository(Stay::class)->FindPatientStays($id); //On peut passer par une requête SQL pour améliorer le système
         
         $stays = $paginator->paginate(
             $data,
@@ -182,7 +182,7 @@ class PatientController extends AbstractController
                     'idPatient' => $id,
                     "firstname" => $firstname, 
                     "lastname" => $lastname,
-                    "pb" => true
+                    
                 ]);  
             }            
         }

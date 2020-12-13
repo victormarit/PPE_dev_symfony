@@ -48,12 +48,12 @@ class StayRepository extends ServiceEntityRepository
     }
     */
 
-    public function FindUserStays(int $id): array
+    public function FindPatientStays(int $id): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-        Select service.id as "serviceId", service.name service, TIMEDIFF(stay.leave_date, stay.entry_date) duree, bed.number bed, hospital_room.number room, stay.entry_date entryDate, stay.leave_date leaveDate, stay.creation_date creationDate
+        Select stay.id as "stayId",service.id as "serviceId", service.name service, TIMEDIFF(stay.leave_date, stay.entry_date) duree, bed.number bed, hospital_room.number room, stay.entry_date entryDate, stay.leave_date leaveDate, stay.creation_date creationDate
         From stay, bed, hospital_room, service 
         Where id_Patient_id = :id and bed.id = stay.id_bed_id and bed.id_hospital_room_id = hospital_room.id and service.id = hospital_room.id_service_id
         GROUP BY stay.id
@@ -135,5 +135,20 @@ class StayRepository extends ServiceEntityRepository
         $stmt->execute(["service" => $serviceId]);
 
         return $stmt->fetchAllAssociative();
+    }
+
+    public function updateStayPatient($idStay, $entryDate, $leaveDate, $idBed)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+        UPDATE stay
+        SET stay.id_bed_id = :bedId,
+        	stay.entry_date = :date1,
+            stay.leave_date = :date2
+        WHERE stay.id = :stayId
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["bedId" => $idBed, "stayId" => $idStay, "date1" => $entryDate, "date2" => $leaveDate]);
+
     }
 }

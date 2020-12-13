@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Bed;
 use App\Entity\Patient;
 use App\Entity\Service;
+use App\Entity\Staff;
 use App\Entity\Stay;
 use App\Form\StayType;
 use Symfony\Component\Routing\Annotation\Route;
@@ -82,9 +84,6 @@ class StayController extends AbstractController
         $patientId = $stay->getIdPatient(); 
         $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $patientId->getId()]);;
         $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-        
-
-        dump($stay->getEntryDate());
         return $this->render('pages/stay/updateStay.html.twig', [
             'services' => $data,
             'idPatient' => $patient->getId(),
@@ -92,7 +91,87 @@ class StayController extends AbstractController
             "lastname" => $patient->getLastName(),
             "entryDate" => $stay->getEntryDate(),
             "leaveDate" => $stay->getLeaveDate(),
-            'service' => $serviceId
+            "idStay" => $stay->getId(),
+            'serviceId' => $serviceId
         ]); 
     }
+
+    /**
+     * @Route("/user/erreurModifierSéjour/{id}/{serviceId}/{erreur}", name="failUpdateStay")
+     */
+    public function failUpdateStay($id, $serviceId, $erreur):Response 
+    {
+        $stay = $this->getDoctrine()->getRepository(Stay::class)->findOneBy(['id' => $id]);
+        $patientId = $stay->getIdPatient(); 
+        $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $patientId->getId()]);;
+        $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+        if($erreur==1){
+            return $this->render('pages/stay/updateStay.html.twig', [
+                'services' => $data,
+                'idPatient' => $patient->getId(),
+                "firstname" => $patient->getFirstName(), 
+                "lastname" => $patient->getLastName(),
+                "entryDate" => $stay->getEntryDate(),
+                "leaveDate" => $stay->getLeaveDate(),
+                'serviceId' => $serviceId,
+                "idStay" => $stay->getId(),
+                "fail" => true
+            ]); 
+        }
+        else{
+            return $this->render('pages/stay/updateStay.html.twig', [
+                'services' => $data,
+                'idPatient' => $patient->getId(),
+                "firstname" => $patient->getFirstName(), 
+                "lastname" => $patient->getLastName(),
+                "entryDate" => $stay->getEntryDate(),
+                "leaveDate" => $stay->getLeaveDate(),
+                'serviceId' => $serviceId,
+                "idStay" => $stay->getId(),
+                "pb" => true
+            ]);
+        }
+        
+    }
+
+    /**
+     * @Route("/user/applicationModifierSéjour/{id}/{lastname}/{firstname}}/{serviceId}/{idStay}", name="applyUpdateStay")
+     */
+    public function applyUpdateStay( $id, $firstname, $lastname, $serviceId, $idStay) 
+    {
+        if(isset($_POST['date1']) && isset($_POST['date2']) && isset($_POST['service'])){
+            if($_POST['date1']<$_POST['date2']){
+                date_default_timezone_set('Europe/Paris');
+                $beds = $this->getDoctrine()->getRepository(Bed::class)->findBedsAndRooms($_POST['service'], $_POST['date1'], $_POST['date2']);
+                if(count($beds)>0){
+                    $this->getDoctrine()->getRepository(Stay::class)->updateStayPatient($idStay, $_POST['date1'], $_POST['date2'],$beds[0]['bed']);
+                
+                    return $this->redirectToRoute('staysPatient', ["id" => $id, "firstname" => $firstname,"lastname" => $lastname ]);
+                }
+                else{ 
+                    $date = $this->getDoctrine()->getRepository(Stay::class)->nextAvailability($_POST['service']);                    
+                    $stay = $this->getDoctrine()->getRepository(Stay::class)->findOneBy(['id' => $idStay]);
+                    $patientId = $stay->getIdPatient(); 
+                    $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $patientId->getId()]);;
+                    $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
+                    return $this->render('pages/stay/updateStay.html.twig', [
+                        'services' => $data,
+                        'idPatient' => $patient->getId(),
+                        "firstname" => $patient->getFirstName(), 
+                        "lastname" => $patient->getLastName(),
+                        "entryDate" => $stay->getEntryDate(),
+                        "leaveDate" => $stay->getLeaveDate(),
+                        'serviceId' => $serviceId,
+                        "idStay" => $stay->getId(),
+                        "pb2" => $date[0]["leave"]
+                    ]); 
+                }
+            }
+            else{
+                return $this->redirectToRoute("failUpdateStay", ["id" => $idStay, "serviceId" => $serviceId, "erreur" => 2 ]);  
+            }            
+        }
+        return $this->redirectToRoute("failUpdateStay", ["id" => $idStay, "serviceId" => $serviceId, "erreur" => 1 ]);
+    }
+
 }

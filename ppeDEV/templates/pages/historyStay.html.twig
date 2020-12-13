@@ -28,6 +28,7 @@
             <th scope="col">Service</th>
             <th scope="col">Chambre</th>
             <th scope="col">Lit</th>
+            <th scope="col">Commandes</th>
           </tr>
         </thead>
 
@@ -45,6 +46,10 @@
                 <td>{{ stay.service }}</td>
                 <td>{{ stay.room }}</td>
                 <td>{{ stay.bed }}</td>
+                <td>
+                  <a href="{{ path( 'updateStay',  {'id': stay.stayId , 'serviceId': stay.serviceId} ) }}" class="btn btn-warning">Modifier</a>
+                  <a href="{{ path( 'delStay',  {'id': stay.stayId } ) }}" class="btn btn-info">Supprimer</a>
+                </td>
               </tr>
             </tbody>
         {% endfor %}

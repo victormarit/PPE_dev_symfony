@@ -17,27 +17,27 @@
         <div class="alert alert-danger">Les dates saisies ne sont pas cohérentes</div>
     {% endif %}
     {% if pb2 is defined %}
-        <div class="alert alert-danger">Aucune place disponile avant le {{ pb2|date('d/m/Y H:i') }}</div>
+        <div class="alert alert-danger">Aucune place pour un séjour aussi long avant le {{ pb2|date('d/m/Y H:i') }}</div>
     {% endif %}
     <div>
-        <form action="{{ path('addStayPatient', {'id': idPatient, 'lastname': lastname, 'firstname': firstname}) }}" method="POST">
+        <form action="{{ path('applyUpdateStay', {'id': idPatient, 'lastname': lastname, 'firstname': firstname, 'serviceId': serviceId, 'idStay': idStay}) }}" method="POST">
             <div class="form-group">
                 <label for="date1">Date de début</label>
                 <input type="datetime-local" class="form-control" id="date1"  name="date1" value="{{ entryDate|date('Y-m-d\\TH:i') }}" required >
             </div>
             <div class="form-group">
                 <label for="date2">Date de fin</label>
-                <input type="datetime-local" class="form-control" id="date2"  name="date2" value="2018-06-14T00:00" required>
+                <input type="datetime-local" class="form-control" id="date2"  name="date2" value="{{ leaveDate|date('Y-m-d\\TH:i') }}" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Service</label>
                       <select class="form-control" id="service" name="service" required>
                           {% for service in services %}
-                              <option value={{ service.id }}>{{ service.name }}</option>
+                              <option value={{ service.id }} {% if serviceId == service.id %} selected {% endif %}>{{ service.name }}</option>
                           {% endfor %}
                       </select>
             </div>
-            <input type="submit" value="Ajouter">
+            <input type="submit" value="Modifier">
         </form>
     </div>
 
