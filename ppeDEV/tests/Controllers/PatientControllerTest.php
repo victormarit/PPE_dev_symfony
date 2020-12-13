@@ -93,4 +93,3 @@ class PatientControllerTest extends WebTestCase
     }
 
 }
-}

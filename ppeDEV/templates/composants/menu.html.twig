@@ -6,7 +6,10 @@
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="{{ path('homepagePatient') }}">Patients </a>
         <a class="dropdown-item" href="{{ path('homepageStay') }}">Séjours</a>
-        <a class="dropdown-item" href="{{ path('homepageStaff') }}">Personnel</a>
-        <a class="dropdown-item" href="{{ path('homepageHospital') }}">Hopital</a>
+        
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="dropdown-item" href="{{ path('homepageStaff') }}">Personnel</a>
+            <a class="dropdown-item" href="{{ path('homepageHospital') }}">Hopital</a>
+        {% endif %}
     </div>
 </div>
