@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="../css/homepage.css">
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/deleteAlert.js') }}" defer></script>
+{% endblock %}
+
 
 {% block title %}Accueil{% endblock %}
 
@@ -19,7 +23,7 @@
                     <h5 class="card-title">{{ staff.firstName }} {{ staff.lastName }}</h5>
                     <p class="card-text"><strong>Numéro de sécurité sociale :</strong> {{ staff.roles[0] }}</p>
                     <a href="{{ path( 'updateStaff',  {'id': staff.id} ) }}" class="btn btn-primary">Modifier</a>
-                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger">Supprimer</a>
+                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger delete">Supprimer</a>
                 </div>
             </div>
         {% endfor %}
@@ -34,5 +38,22 @@
     </div>
 
     {{ knp_pagination_render(staffs) }}
+
+    <div class="modal" tabindex="-1" id="modalDeleteAlert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Attention</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûre de vouloir supprimer ce salarié ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalAlertNon">Non</button>
+                    <button type="button" class="btn btn-primary" id="modalAlertOui">Oui</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

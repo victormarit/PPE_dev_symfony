@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="../../css/homepage.css">
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/deleteAlert.js') }}" defer></script>
+{% endblock %}
+
 
 {% block title %}Gestion {{ service }} {% endblock %}
 
@@ -35,22 +39,39 @@
                         <a href="{{ path( 'addBed',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-primary">Ajouter un lit</a>
                         <a href="{{ path( 'removeBed',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-warning">Retirer un lit</a>
                         <a href="{{ path( 'updateRoom',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-info">Modifier</a>
-                        <a href="{{ path( 'delRoom',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-danger">Supprimer</a>   
+                        <a href="{{ path( 'delRoom',  {'id': id, "name" : service, "room" : room.id} ) }}" class="btn btn-danger delete">Supprimer</a>
                     </td>
                   </tr>
                 </tbody>
-            
+
         {% endfor %}
         {{ knp_pagination_render(rooms) }}
         </table>
 
     {% endif %}
-    
+
     <div class="card ml-2 mr-2" style="width: 18rem;">
       <div class="card-body">
           <h5 class="card-title">Ajouter une chambre</h5>
           <a href="{{ path( 'addRoom',  {'id': id, "name" : service} ) }}" class="btn btn-primary">Ajouter</a>
       </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalDeleteAlert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Attention</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûre de vouloir supprimer cette chambre ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalAlertNon">Non</button>
+                    <button type="button" class="btn btn-primary" id="modalAlertOui">Oui</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

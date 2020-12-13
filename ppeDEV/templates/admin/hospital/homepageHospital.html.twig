@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="../../css/homepage.css">
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/deleteAlert.js') }}" defer></script>
+{% endblock %}
+
 
 {% block title %}Gestion Services{% endblock %}
 
@@ -34,7 +38,7 @@
                 <td>
                     <a href="{{ path( 'manageService',  {'id': service.id, "name" : service.name} ) }}" class="btn btn-primary">Gérer</a>
                     <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-info">Modifier</a>
-                    <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger">Supprimer</a>   
+                    <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger delete">Supprimer</a>
                 </td>
               </tr>
             </tbody>
@@ -45,6 +49,23 @@
         <div class="card-body">
             <h5 class="card-title">Ajouter un service</h5>
             <a href="{{ path('addService') }}" class="btn btn-primary">Ajouter</a>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalDeleteAlert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Attention</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûre de vouloir supprimer ce service ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalAlertNon">Non</button>
+                    <button type="button" class="btn btn-primary" id="modalAlertOui">Oui</button>
+                </div>
+            </div>
         </div>
     </div>
 
