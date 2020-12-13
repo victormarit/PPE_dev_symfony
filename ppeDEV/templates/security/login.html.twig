@@ -25,9 +25,9 @@
         <div class="mb-3 w-50">
             <div class="w-100" align="center">
                 <div class="form-signin login">
-                    <label for="inputLogin" class="h4">Identifiant:</label>
+                    <label for="inputLogin" class="h5">Identifiant:</label>
                     <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" required autofocus>
-                    <label for="inputPassword" class="mt-4 h4">Mot de passe:</label>
+                    <label for="inputPassword" class="mt-4 h5">Mot de passe:</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
