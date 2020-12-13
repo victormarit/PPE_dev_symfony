@@ -23,7 +23,7 @@
                     <h5 class="card-title">{{ staff.firstName }} {{ staff.lastName }}</h5>
                     <p class="card-text"><a class ="font-weight-bold">Rôle :<br></a> {% if staff.roles[0] == "ROLE_ADMIN" %} Administrateur {% else %} Personnel {% endif %}</p>
                     <a href="{{ path( 'updateStaff',  {'id': staff.id} ) }}" class="btn btn-primary w-100 mb-2"><i class="fas fa-user-edit"></i> Détails</a>
-                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger w-100 mb-2"><i class="fas fa-user-slash"></i> Supprimer</a>
+                    <a href="{{ path( 'delStaff',  {'id': staff.id} ) }}" class="btn btn-danger w-100 mb-2 delete"><i class="fas fa-user-slash"></i> Supprimer</a>
                 </div>
             </div>
         {% endfor %}
