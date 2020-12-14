@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{asset("../css/searchBar.css")}}">
+    <link rel="stylesheet" href="{{ asset("../css/searchBar.css") }}" xmlns="http://www.w3.org/1999/html">
     <link rel="stylesheet" href="{{asset("../css/homepage.css")}}">
 {% endblock %}
 
@@ -37,40 +37,39 @@
 
         </tr>
         </thead>
-
+        <tbody>
         {% set num = 0 %}
 
-        {% for stay in stays %}
-            {% set num = num + 1 %}
-            <tbody>
-            <tr>
-                <th scope="row">{{ num }}</th>
-                <td>{{ stay.lastname }}</td>
-                <td>{{ stay.firstname }}</td>
-                <td>{{ stay.serviceName }}</td>
-                <td>{{ stay.roomNumber }}</td>
-                <td>{{ stay.bedNumber }}</td>
-                <td>{{ stay.entryDate|date('d/m/Y H:i') }}</td>
-                <td>{{ stay.leaveDate|date('d/m/Y H:i') }}</td>
-                <td>{{ stay.duration }}</td>
-                <td>{{ stay.creationDate|date('d/m/Y H:i') }}</td>
-                <td>
-                    <a href="{{ path( 'updateStay',  {'id': stay.id, 'serviceId': stay.serviceId} ) }}" class="btn btn-warning">Modifier</a>
-                    <a href="{{ path( 'delStay',  {'id': stay.id} ) }}" class="btn btn-info delete">Supprimer</a>
-                </td>
-            </tr>
-            </tbody>
-        {% endfor %}
+            {% for stay in stays %}
+                {% set num = num + 1 %}
+                <tr>
+                    <th scope="row">{{ num }}</th>
+                    <td>{{ stay.lastname }}</td>
+                    <td>{{ stay.firstname }}</td>
+                    <td>{{ stay.serviceName }}</td>
+                    <td>{{ stay.roomNumber }}</td>
+                    <td>{{ stay.bedNumber }}</td>
+                    <td>{{ stay.entryDate|date('d/m/Y H:i') }}</td>
+                    <td>{{ stay.leaveDate|date('d/m/Y H:i') }}</td>
+                    <td>{{ stay.duration }}</td>
+                    <td>{{ stay.creationDate|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <a href="{{ path( 'updateStay',  {'id': stay.id, 'serviceId': stay.serviceId} ) }}" class="btn btn-warning">Modifier</a>
+                        <a href="{{ path( 'delStay',  {'id': stay.id} ) }}" class="btn btn-info delete">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="11">
+            <a href="{{ path('homepagePatient') }}" class="btn btn-primary w-100 add">Ajouter un séjour</a>
+        </td>
+    </tr>
+    </tfoot>
     </table>
 
     {{ knp_pagination_render(stays) }}
-
-    <div class="card ml-2 mr-2" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Ajouter un séjour</h5>
-            <a href="{{ path('homepagePatient') }}" class="btn btn-primary add">Ajouter</a>
-        </div>
-    </div>
 
     <div class="modal" tabindex="-1" id="modalDeleteAlert">
         <div class="modal-dialog">

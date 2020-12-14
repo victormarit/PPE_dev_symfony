@@ -24,15 +24,20 @@ class Manage
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="manages")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idPatient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Staff::class, inversedBy="manages")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idStaff;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $action;
 
     public function getId(): ?int
     {
@@ -71,6 +76,18 @@ class Manage
     public function setIdStaff(?Staff $idStaff): self
     {
         $this->idStaff = $idStaff;
+
+        return $this;
+    }
+
+    public function getAction(): ?string
+    {
+        return $this->action;
+    }
+
+    public function setAction(string $action): self
+    {
+        $this->action = $action;
 
         return $this;
     }

@@ -19,13 +19,13 @@ class AddStay
 
     /**
      * @ORM\ManyToOne(targetEntity=Stay::class, inversedBy="addStays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idStay;
 
     /**
      * @ORM\ManyToOne(targetEntity=Staff::class, inversedBy="addStays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idStaff;
 
@@ -33,6 +33,11 @@ class AddStay
      * @ORM\Column(type="datetime")
      */
     private $modification;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $action;
 
     public function getId(): ?int
     {
@@ -71,6 +76,18 @@ class AddStay
     public function setModification(\DateTimeInterface $modification): self
     {
         $this->modification = $modification;
+
+        return $this;
+    }
+
+    public function getAction(): ?string
+    {
+        return $this->action;
+    }
+
+    public function setAction(string $action): self
+    {
+        $this->action = $action;
 
         return $this;
     }

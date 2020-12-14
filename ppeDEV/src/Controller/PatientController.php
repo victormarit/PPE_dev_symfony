@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\AddStay;
 use App\Entity\Bed;
+use App\Entity\Manage;
 use App\Entity\Patient;
 use App\Entity\Service;
 use App\Entity\Staff;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use DateTime;
 
 class PatientController extends AbstractController
 {
@@ -60,6 +63,7 @@ class PatientController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
+                $this->loggerPatient($user, 'creation');
                 return $this->redirectToRoute('homepagePatient'); 
             }
             else
@@ -73,6 +77,20 @@ class PatientController extends AbstractController
         return $this->render('user/patient/addPatient.html.twig', [
             "form" => $form->createView()
         ]);
+    }
+
+    private function loggerPatient($patient, $action)
+    {
+        $manage = new Manage();
+        $manage->setIdPatient($patient);
+        date_default_timezone_set('Europe/Paris');
+        $currentDate =  DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s"));
+        $manage->setModification($currentDate);
+        $manage->setIdStaff($this->getUser());
+        $manage->setAction($action);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($manage);
+        $em->flush();
     }
 
     /**
@@ -90,6 +108,7 @@ class PatientController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $this->loggerPatient($user, 'modification');
             return $this->redirectToRoute('homepagePatient'); 
         }
         
@@ -173,10 +192,15 @@ class PatientController extends AbstractController
         if(isset($_POST['date1']) && isset($_POST['date2']) && isset($_POST['service'])){
             if($_POST['date1']<$_POST['date2']){
                 date_default_timezone_set('Europe/Paris');
-                $currentDate = date("Y-m-d h:i:sa");
                 $beds = $this->getDoctrine()->getRepository(Bed::class)->findBedsAndRooms($_POST['service'], $_POST['date1'], $_POST['date2']);
                 if(count($beds)>0){
+                    $currentDate = date("Y-m-d h:i:sa");
+                    $currentDateLog =  DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s"));
                     $this->getDoctrine()->getRepository(Stay::class)->AddStayPatient($beds[0]['bed'], $id , $_POST['date1'], $_POST['date2'], $currentDate);
+                    $stay=$this->getDoctrine()->getRepository(Stay::class)->findOneBy(['entryDate' => date(DATE_ATOM, $_POST['date1']), 'leaveDate' => date(DATE_ATOM, $_POST['date2'])]);
+                    $staffId=$this->getUser()->getId();
+                    $this->getDoctrine()->getRepository(AddStay::class)->addLogerStay($stay->getId(), $staffId, $currentDateLog, 'creation');
+
                 
                     return $this->redirectToRoute('staysPatient', ["id" => $id, "firstname" => $firstname,"lastname" => $lastname ]);
                 }

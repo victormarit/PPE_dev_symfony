@@ -36,13 +36,13 @@ class Stay
 
     /**
      * @ORM\ManyToOne(targetEntity=Bed::class, inversedBy="stays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idBed;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="stays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idPatient;
 

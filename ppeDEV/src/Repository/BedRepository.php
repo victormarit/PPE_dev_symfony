@@ -69,5 +69,4 @@ class BedRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }
 
-
 }

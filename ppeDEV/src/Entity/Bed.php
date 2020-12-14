@@ -26,7 +26,7 @@ class Bed
 
     /**
      * @ORM\ManyToOne(targetEntity=HospitalRoom::class, inversedBy="beds")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idHospitalRoom;
 

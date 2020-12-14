@@ -47,4 +47,13 @@ class AddStayRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function addLogerStay($id_stay_id, $id_staff_id, $modification, $action)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "INSERT INTO add_stay('id_stay_id', 'id_staff_id', 'modification', 'action')
+                values(:id_stay_id, :id_staff_id, :modification, :action) ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["id_stay_id" => $id_stay_id, "id_staff_id" => $id_staff_id, "modification" => $modification, "action" => $action]);
+    }
 }

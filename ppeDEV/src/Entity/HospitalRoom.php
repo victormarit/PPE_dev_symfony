@@ -26,7 +26,7 @@ class HospitalRoom
 
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="hospitalRooms")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idService;
 

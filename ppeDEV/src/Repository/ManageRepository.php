@@ -47,4 +47,13 @@ class ManageRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function addLogerPatient($id_patient_id,	$id_staff_id, $modification, $action)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "INSERT INTO manage('id_patient_id', 'id_staff_id', 'modification', 'action')
+                values(:id_patient_id, :id_staff_id, :modification, :action) ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["id_patient_id" => $id_patient_id, "id_staff_id" => $id_staff_id, "modification" => $modification, "action" => $action]);
+    }
 }
