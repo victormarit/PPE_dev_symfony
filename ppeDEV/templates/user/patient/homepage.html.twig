@@ -48,10 +48,13 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    {{ knp_pagination_render(patients) }}
+    <div class="d-flex justify-content-center">
+        {{ knp_pagination_render(patients) }}
+    </div>
+
+
 
     <div class="modal" tabindex="-1" id="modalDeleteAlert">
         <div class="modal-dialog">
