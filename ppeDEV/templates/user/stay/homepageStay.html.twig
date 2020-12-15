@@ -55,8 +55,10 @@
                     <td>{{ stay.duration }}</td>
                     <td>{{ stay.creationDate|date('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ path( 'updateStay',  {'id': stay.id, 'serviceId': stay.serviceId} ) }}" class="btn w-100 btn-warning">Modifier</a>
-                        <a href="{{ path( 'delStay',  {'id': stay.id} ) }}" class="btn btn-info w-100 mt-2 delete">Supprimer</a>
+                        <div class="d-flex flex-row justify-content-center">
+                            <a href="{{ path( 'updateStay',  {'id': stay.id, 'serviceId': stay.serviceId} ) }}" class="btn w-50 mr-3 btn-warning"><i class="far fa-edit"></i> Modifier</a>
+                            <a href="{{ path( 'delStay',  {'id': stay.id} ) }}" class="btn btn-info w-50 delete"><i class="far fa-trash-alt"></i> Supprimer</a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
