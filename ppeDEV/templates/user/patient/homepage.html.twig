@@ -34,8 +34,8 @@
                     <h4 class="card-title h3  mb-3">{{ patient.firstName }} {{ patient.lastName }}</h4>
                     <p class="card-text"><a class ="font-weight-bold">Numéro de sécurité sociale :</a> {{ patient.socialSecurityNumber }}</p>
                     <a href="{{ path( 'updatePatient',  {'id': patient.id} ) }}" class="btn btn-primary w-100 mb-4"><i class="fas fa-user-edit"></i> Modifier</a>
-                    <a href="{{ path( 'staysPatient',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4">Historique Séjours</a>
-                    <a href="{{ path( 'newStay',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4">Nouveau Séjours</a>
+                    <a href="{{ path( 'staysPatient',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4"><i class="fas fa-history"></i> Historique Séjours</a>
+                    <a href="{{ path( 'newStay',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4"><i class="far fa-calendar-plus"></i> Nouveau Séjours</a>
                     <a href="{{ path( 'delPatient',  {'id': patient.id} ) }}" class="btn btn-danger w-100 mb-2 delete"><i class="fas fa-user-slash"></i> Supprimer</a>
                 </div>
             </div>
