@@ -194,12 +194,13 @@ class PatientController extends AbstractController
                 date_default_timezone_set('Europe/Paris');
                 $beds = $this->getDoctrine()->getRepository(Bed::class)->findBedsAndRooms($_POST['service'], $_POST['date1'], $_POST['date2']);
                 if(count($beds)>0){
-                    $currentDate = date("Y-m-d h:i:sa");
-                    $currentDateLog =  DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s"));
+                    $currentDate = date("Y-m-d H:i:s");
+                    $entry =  new DateTime($_POST['date1']);
+                    $leave =  new DateTime($_POST['date2']);
                     $this->getDoctrine()->getRepository(Stay::class)->AddStayPatient($beds[0]['bed'], $id , $_POST['date1'], $_POST['date2'], $currentDate);
-                    $stay=$this->getDoctrine()->getRepository(Stay::class)->findOneBy(['entryDate' => date(DATE_ATOM, $_POST['date1']), 'leaveDate' => date(DATE_ATOM, $_POST['date2'])]);
+                    $stay=$this->getDoctrine()->getRepository(Stay::class)->findOneBy(['entryDate' => $entry, 'leaveDate' => $leave ]);
                     $staffId=$this->getUser()->getId();
-                    $this->getDoctrine()->getRepository(AddStay::class)->addLogerStay($stay->getId(), $staffId, $currentDateLog, 'creation');
+                    $this->getDoctrine()->getRepository(AddStay::class)->addLogerStay($stay->getId(), $staffId, $currentDate, 'creation');
 
                 
                     return $this->redirectToRoute('staysPatient', ["id" => $id, "firstname" => $firstname,"lastname" => $lastname ]);
