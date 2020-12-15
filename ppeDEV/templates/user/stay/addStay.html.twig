@@ -1,13 +1,51 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("../css/searchBar.css")}}">
+    <link rel="stylesheet" href="{{asset("../css/homepage.css")}}">
 {% endblock %}
 
 
-{% block title %}Nouveau Séjour{% endblock %}
+{% block title %}Nouveau séjour{% endblock %}
 
 {% block body %}
     {% include 'composants/header.html.twig' %}
-    {{ form_start(form) }}
-    {{ form_end(form) }}
+    {% if fail is defined %}
+        <div class="alert alert-danger">Aucun lit disponible pour ces dates</div>
+    {% endif %}
+    {% if pb is defined %}
+        <div class="alert alert-danger">Les dates saisies ne sont pas cohérentes</div>
+    {% endif %}
+    {% if pb2 is defined %}
+        <div class="alert alert-danger">Aucune place disponible avant le {{ pb2|date('d/m/Y H:i') }}</div>
+    {% endif %}
+    {% if pb3 is defined %}
+        <div class="alert alert-danger">Aucune place disponible pour le moment dans ce service</div>
+    {% endif %}
+    <div class="d-flex justify-content-center">
+        <form action="{{ path('addStayPatient', {'id': idPatient, 'lastname': lastname, 'firstname': firstname}) }}" method="POST" class="w-75 d-flex flex-column">
+            <div class="form-group">
+                <label for="date1" class="h3 ml-4 mb-0">Date de début</label>
+                <input type="datetime-local" class="form-control" id="date1"  name="date1" {% if entryDate is defined %} value="{{ entryDate|date('Y-m-d\\TH:i') }}" {% endif %} required >
+            </div>
+            <div class="form-group">
+                <label for="date2" class="h3 ml-4 mb-0">Date de fin</label>
+                <input type="datetime-local" class="form-control" id="date2"  name="date2" {% if leaveDate is defined %} value="{{ leaveDate|date('Y-m-d\\TH:i') }}" {% endif %} required>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1" class="h3 ml-4 mb-0">Service</label>
+                      <select class="form-control" id="service" name="service" required>
+                          {% for service in services %}
+                               <option value={{ service.id }} {% if  serviceId is defined and serviceId == service.id %} selected {% endif %}>{{ service.name }}</option>
+                          {% endfor %}
+                      </select>
+            </div>
+            <div class="mt-4 d-flex justify-content-center w-100">
+                <div class="w-75 d-flex justify-content-center">
+                    <input type="submit" class="btn btn-primary w-100" value="Modifier">
+                </div>
+            </div>
+        </form>
+    </div>
+
 {% endblock %}

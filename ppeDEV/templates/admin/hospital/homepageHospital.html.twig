@@ -16,41 +16,44 @@
     {% include 'composants/header.html.twig' %}
     {% include 'composants/searchBarHospital.html.twig' %}
 
+    <div class="table-responsive">
     <table class="table">
         <thead>
           <tr>
             <th scope="col">Numéro</th>
             <th scope="col">Services</th>
             <th scope="col">Nombre de lits</th>
-            <th scope="col">Commandes</th>
+            <th scope="col" class="text-center">Commandes</th>
           </tr>
         </thead>
+        <tbody>
 
         {% set num = 0 %}
 
         {% for service in services %}
             {% set num = num + 1 %}
-            <tbody>
               <tr>
                 <th scope="row">{{ num }}</th>
                 <td>{{ service.name }}</td>
                 <td>{{ service.bed }}</td>
                 <td>
-                    <a href="{{ path( 'manageService',  {'id': service.id, "name" : service.name} ) }}" class="btn btn-primary">Gérer</a>
-                    <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-info">Modifier</a>
-                    <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger delete">Supprimer</a>
+                    <a href="{{ path( 'manageService',  {'id': service.id, "name" : service.name} ) }}" class="btn btn-primary w-100">Gérer</a>
+                    <a href="{{ path( 'updateService',  {'id': service.id} ) }}" class="btn btn-info mt-3 w-100">Modifier</a>
+                    <a href="{{ path( 'delService',  {'id': service.id} ) }}" class="btn btn-danger delete mt-3 w-100">Supprimer</a>
                 </td>
               </tr>
-            </tbody>
         {% endfor %}
+            </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="11">
+                <a href="{{ path('addService') }}" class="btn btn-primary w-100 add">Ajouter un service</a>
+            </td>
+        </tr>
+        </tfoot>
     </table>
-    {{ knp_pagination_render(services) }}
-    <div class="card ml-2 mr-2" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Ajouter un service</h5>
-            <a href="{{ path('addService') }}" class="btn btn-primary">Ajouter</a>
-        </div>
     </div>
+    {{ knp_pagination_render(services) }}
 
     <div class="modal" tabindex="-1" id="modalDeleteAlert">
         <div class="modal-dialog">
