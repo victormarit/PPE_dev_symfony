@@ -37,7 +37,7 @@ class PatientController extends AbstractController
         $patients = $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
-            9//nombre d'élements par page 
+            6//nombre d'élements par page 
         );
         return $this->render('user/patient/homepage.html.twig', [
             'patients' => $patients
