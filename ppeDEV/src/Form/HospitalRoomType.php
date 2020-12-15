@@ -16,12 +16,19 @@ class HospitalRoomType extends AbstractType
     {
         $builder
             ->add('number', TextType::class, [
-                "label" => "Numéro ",
+                "label" => "Numéro de chambre:",
                 "attr" => [
                     "class" => "form-control"
+                ],
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
                 ]
             ])
-            ->add("Sauvegarder", SubmitType::class)
+            ->add("Sauvegarder", SubmitType::class, [
+                "attr" => [
+                    "class" => "btn btn-primary w-100"
+                ]
+            ])
         ;
     }
 
