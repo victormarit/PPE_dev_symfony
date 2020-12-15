@@ -62,16 +62,25 @@
             {% endfor %}
         </tbody>
     <tfoot>
+
+
+
     <tr>
         <td colspan="11">
             <a href="{{ path('homepagePatient') }}" class="btn btn-primary w-100 add">Ajouter un séjour</a>
         </td>
     </tr>
+
+        
     </tfoot>
     </table>
     </div>
 
-    {{ knp_pagination_render(stays) }}
+    
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(stays) }}
+        </div>
+
 
     <div class="modal" tabindex="-1" id="modalDeleteAlert">
         <div class="modal-dialog">
