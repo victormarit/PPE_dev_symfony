@@ -22,25 +22,30 @@
     {% if pb3 is defined %}
         <div class="alert alert-danger">Aucune place disponible pour le moment dans ce service</div>
     {% endif %}
-    <div>
-        <form action="{{ path('applyUpdateStay', {'id': idPatient, 'lastname': lastname, 'firstname': firstname, 'serviceId': serviceId, 'idStay': idStay}) }}" method="POST">
+    <div class="d-flex justify-content-center">
+        <form action="{{ path('applyUpdateStay', {'id': idPatient, 'lastname': lastname, 'firstname': firstname, 'serviceId': serviceId, 'idStay': idStay}) }}" method="POST" class="w-75 d-flex flex-column">
             <div class="form-group">
-                <label for="date1">Date de début</label>
+                <label for="date1" class="h3 ml-4 mb-0">Date de début</label>
                 <input type="datetime-local" class="form-control" id="date1"  name="date1" value="{{ entryDate|date('Y-m-d\\TH:i') }}" required >
             </div>
             <div class="form-group">
-                <label for="date2">Date de fin</label>
+                <label for="date2" class="h3 ml-4 mb-0">Date de fin</label>
                 <input type="datetime-local" class="form-control" id="date2"  name="date2" value="{{ leaveDate|date('Y-m-d\\TH:i') }}" required>
             </div>
             <div class="form-group">
-                <label for="exampleFormControlSelect1">Service</label>
+                <label for="exampleFormControlSelect1" class="h3 ml-4 mb-0">Service</label>
                       <select class="form-control" id="service" name="service" required>
                           {% for service in services %}
                               <option value={{ service.id }} {% if serviceId == service.id %} selected {% endif %}>{{ service.name }}</option>
                           {% endfor %}
                       </select>
+
             </div>
-            <input type="submit" value="Modifier">
+            <div class="mt-4 d-flex justify-content-center w-100">
+                <div class="w-75 d-flex justify-content-center">
+                    <input type="submit" class="btn btn-primary w-100" value="Modifier">
+                </div>
+            </div>
         </form>
     </div>
 

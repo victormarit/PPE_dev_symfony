@@ -16,11 +16,18 @@ class ServiceType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 "attr" => [
-                    "class" => "form-control"
+                    "class" => "form-control w-100"
                 ],
-                'label'=>'Nom du Service'
+                'label'=>'Nom du Service :',
+                "label_attr" => [
+                    "class" => "h3 ml-4 mb-0"
+                ]
             ])
-            ->add("Sauvegarder", SubmitType::class)
+            ->add("Sauvegarder", SubmitType::class, [
+                "attr" => [
+                    "class" => "btn btn-primary w-50 mt-3"
+                ]
+            ])
         ;
     }
 

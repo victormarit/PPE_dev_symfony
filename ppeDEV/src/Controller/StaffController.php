@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Controller;
 
 use App\Entity\Staff;
@@ -40,12 +40,12 @@ class StaffController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function createNewStaffMember(Request $request, UserPasswordEncoderInterface $passwordEncoder):Response 
+    public function createNewStaffMember(Request $request, UserPasswordEncoderInterface $passwordEncoder):Response
     {
         $staff = new Staff;
         $form =  $this->createForm(StaffType::class, $staff);
         $form->handleRequest($request);
-        
+
         if($form->isSubmitted()&& $form->isValid()){
             $staff->setPassword(
                 $passwordEncoder->encodePassword(
@@ -56,9 +56,9 @@ class StaffController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($staff);
             $em->flush();
-            return $this->redirectToRoute('homepagePatient'); 
+            return $this->redirectToRoute('homepageStaff'); 
         }
-        
+
         return $this->render('admin/staff/addStaff.html.twig', [
             "form" => $form->createView()
         ]);
@@ -69,14 +69,14 @@ class StaffController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function delStaff($id):Response 
+    public function delStaff($id):Response
     {
         $staff = $this->getDoctrine()->getRepository(Staff::class)->findOneBy(['id' => $id]);
         $em = $this->getDoctrine()->getManager();
         $em->remove($staff);
         $em->flush();
-           
-        return $this->redirectToRoute('homepagePatient'); 
+
+        return $this->redirectToRoute('homepagePatient');
     }
 
     /**
@@ -84,19 +84,19 @@ class StaffController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function updateStaff(Request $request, $id):Response 
+    public function updateStaff(Request $request, $id):Response
     {
         $staff = $this->getDoctrine()->getRepository(Staff::class)->findOneBy(['id' => $id]);
         $form =  $this->createForm(StaffType::class, $staff);
         $form->handleRequest($request);
-        
+
         if($form->isSubmitted()&& $form->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($staff);
             $em->flush();
-            return $this->redirectToRoute('homepagePatient'); 
+            return $this->redirectToRoute('homepagePatient');
         }
-        
+
         return $this->render('admin/staff/addStaff.html.twig', [
             "form" => $form->createView()
         ]);

@@ -176,7 +176,7 @@ class PatientController extends AbstractController
     public function newStay($id, $firstname, $lastname):Response 
     {
         $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-        return $this->render('user/stay/showStay.html.twig', [
+        return $this->render('user/stay/addStay.html.twig', [
             'services' => $data,
             'idPatient' => $id,
             "firstname" => $firstname, 
@@ -210,7 +210,7 @@ class PatientController extends AbstractController
                     $date = $this->getDoctrine()->getRepository(Stay::class)->nextAvailability($_POST['service']);                    
                     $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
                     if(count($date)>0){
-                        return $this->render('user/stay/showStay.html.twig', [
+                        return $this->render('user/stay/addStay.html.twig', [
                             'services' => $data,
                             'idPatient' => $id,
                             "firstname" => $firstname, 
@@ -222,7 +222,7 @@ class PatientController extends AbstractController
                         ]);
                     }
                     else{
-                        return $this->render('user/stay/showStay.html.twig', [
+                        return $this->render('user/stay/addStay.html.twig', [
                             'services' => $data,
                             'idPatient' => $id,
                             "firstname" => $firstname, 
@@ -238,7 +238,7 @@ class PatientController extends AbstractController
             }
             else{
                 $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-                return $this->render('user/stay/showStay.html.twig', [
+                return $this->render('user/stay/addStay.html.twig', [
                     'services' => $data,
                     'idPatient' => $id,
                     "firstname" => $firstname, 
@@ -251,7 +251,7 @@ class PatientController extends AbstractController
             }            
         }
         $data = $this->getDoctrine()->getRepository(Service::class)->findAll();
-        return $this->render('user/stay/showStay.html.twig', [
+        return $this->render('user/stay/addStay.html.twig', [
             'services' => $data,
             'idPatient' => $id,
             "firstname" => $firstname, 

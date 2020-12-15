@@ -147,7 +147,7 @@ class StayController extends AbstractController
     }
 
     /**
-     * @Route("/user/applicationModifierSéjour/{id}/{lastname}/{firstname}}/{serviceId}/{idStay}", name="applyUpdateStay")
+     * @Route("/user/applicationModifierSéjour/{id}/{lastname}/{firstname}/{serviceId}/{idStay}", name="applyUpdateStay")
      */
     public function applyUpdateStay( $id, $firstname, $lastname, $serviceId, $idStay)
     {
@@ -198,7 +198,7 @@ class StayController extends AbstractController
                             "pb3" => 0
                         ]);
                     }
-                    
+
                 }
             }
             else{
