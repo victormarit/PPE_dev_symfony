@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("../../css/searchBar.css") }}">
+    <link rel="stylesheet" href="{{ asset("../../css/homepage.css") }}">
+{% endblock %}
+
+
+{% block title %}Historique des séjours{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {% include 'composants/searchBarLogStay.html.twig' %}
+
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Utilisateur</th>
+            <th scope="col">Patient</th>
+            <th scope="col">Date d'entrée</th>
+            <th scope="col">Date de sortie</th>
+            <th scope="col">Date de modification</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {% set num = 0 %}
+
+        {% for log in logs.items %}
+            {% set num = num + 1 %}
+              <tr>
+                <th scope="row">{{ num }}</th>
+                <td>{{ log.fn }} {{ log.ln }}</td>
+                <td>{{ log.first_name }} {{ log.last_name }}</td>
+                <td>{{ log.entry_date|date('d/m/Y H:i') }}</td>
+                <td>{{ log.leave_date|date('d/m/Y H:i') }}</td>
+                <td>{{ log.modification|date('d/m/Y H:i') }}</td>
+                <td>{% if log.action == "modification" %} Modification {% elseif log.action == "suppression" %} Suppression {% elseif log.action == "creation" %} Création {% else %} Réactivation{% endif %}</td>
+              </tr>
+        {% endfor %}
+            </tbody>
+    </table>
+    </div>
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(logs) }}
+        </div>
+
+{% endblock %}

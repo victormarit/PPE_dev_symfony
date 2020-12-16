@@ -56,4 +56,40 @@ class ManageRepository extends ServiceEntityRepository
         $stmt = $conn->prepare($sql);
         $stmt->execute(["id_patient_id" => $id_patient_id, "id_staff_id" => $id_staff_id, "modification" => $modification, "action" => $action]);
     }
+
+
+
+
+    public function FindPatientLog(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT  manage.action, staff.last_name as ln, staff.first_name as fn, patient.first_name, patient.last_name, manage.modification
+        From manage, staff, patient
+        Where manage.id_staff_id = staff.id
+        AND patient.id = manage.id_patient_id
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function FindPatientLogQuery($query): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $query = "%".$query."%";
+        $sql = '
+        SELECT  manage.action, staff.last_name as ln, staff.first_name as fn, patient.first_name, patient.last_name, manage.modification
+        From manage, staff, patient
+        Where manage.id_staff_id = staff.id
+        AND patient.id = manage.id_patient_id
+        AND (patient.first_name like :name OR patient.last_name like :name)
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['name' => $query]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

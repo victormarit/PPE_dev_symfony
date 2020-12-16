@@ -56,4 +56,39 @@ class AddStayRepository extends ServiceEntityRepository
         $stmt = $conn->prepare($sql);
         $stmt->execute(["id_stay_id" => $id_stay_id, "id_staff_id" => $id_staff_id, "modification" => $modification, "act" => $act]);
     }
+
+    public function FindStayLog(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT patient.first_name, patient.last_name, stay.entry_date, stay.leave_date, add_stay.modification, add_stay.action, staff.first_name as fn, staff.last_name as ln
+        From add_stay, staff, stay, patient 
+        Where add_stay.id_staff_id = staff.id
+        AND stay.id = add_stay.id_stay_id 
+        AND patient.id = stay.id_patient_id
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function FindStayLogQuery($query): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $query = "%".$query."%";
+        $sql = '
+        SELECT patient.first_name, patient.last_name, stay.entry_date, stay.leave_date, add_stay.modification, add_stay.action, staff.first_name as fn, staff.last_name as ln
+        From add_stay, staff, stay, patient 
+        Where add_stay.id_staff_id = staff.id
+        AND stay.id = add_stay.id_stay_id 
+        AND patient.id = stay.id_patient_id
+        AND (patient.first_name like :name OR patient.last_name like :name)
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['name' => $query]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

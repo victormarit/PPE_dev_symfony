@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("../../css/searchBar.css") }}">
+    <link rel="stylesheet" href="{{ asset("../../css/homepage.css") }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/deleteAlert.js') }}" defer></script>
+{% endblock %}
+
+
+{% block title %}Historique des logs{% endblock %}
+
+{% block body %}
+    {% include 'composants/header.html.twig' %}
+    {% include 'composants/searchBarLogConnection.html.twig' %}
+
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Utilisateur</th>
+            <th scope="col">Date</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {% set num = 0 %}
+
+        {% for log in logs.items %}
+            {% set num = num + 1 %}
+              <tr>
+                <th scope="row">{{ num }}</th>
+                <td>{{ log.first_name }} {{ log.last_name }}</td>
+                <td>{{ log.date|date('d/m/Y H:i')  }}</td>
+                <td>{{ log.action }}</td>
+              </tr>
+        {% endfor %}
+            </tbody>
+    </table>
+    </div>
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(logs) }}
+        </div>
+
+{% endblock %}

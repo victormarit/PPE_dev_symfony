@@ -47,4 +47,35 @@ class LogUserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function FindUserLog(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT * 
+        From log_user, staff 
+        Where log_user.staff_id = staff.id
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function FindUserLogQuery($query): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $query = "%".$query."%";
+        $sql = '
+        SELECT * 
+        From log_user, staff 
+        Where log_user.staff_id = staff.id
+        AND staff.login like :name
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['name' => $query]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }
