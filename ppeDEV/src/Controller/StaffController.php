@@ -19,8 +19,8 @@ class StaffController extends AbstractController
      */
     public function homepageStaff(Request $request, PaginatorInterface $paginator)
     {
-        if(isset($_GET['staff'])){
-            $donnees  = $this->getDoctrine()->getRepository(Staff::class)->findStaffs($_GET['staff']);
+        if(isset($_GET['search'])){
+            $donnees  = $this->getDoctrine()->getRepository(Staff::class)->findStaffs($_GET['search']);
         }
         else {
             $donnees  = $this->getDoctrine()->getRepository(Staff::class)->findBy([], ['id'=>'desc']);

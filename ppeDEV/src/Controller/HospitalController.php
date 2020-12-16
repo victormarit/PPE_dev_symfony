@@ -20,8 +20,8 @@ class HospitalController extends AbstractController
      */
     public function homepageHospital(Request $request, PaginatorInterface $paginator)
     {
-        if(isset($_GET['service'])){
-            $data = $this->getDoctrine()->getRepository(Service::class)->FindServicesQuery($_GET['service']);
+        if(isset($_GET['search'])){
+            $data = $this->getDoctrine()->getRepository(Service::class)->FindServicesQuery($_GET['search']);
         }
         else {
             $data = $this->getDoctrine()->getRepository(Service::class)->FindServices();
