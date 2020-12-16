@@ -54,6 +54,7 @@ class PatientRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('s')
             ->Where('s.firstName LIKE :val')
             ->orWhere('s.lastName LIKE :val')
+            ->andWhere('s.activate = 1')
             ->setParameter('val', $search)
             ->orderBy('s.lastName', 'ASC')
             ->getQuery()

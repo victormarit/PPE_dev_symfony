@@ -46,7 +46,7 @@ class StayController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function addStayandPatient(Request $request)
+    public function addStayandPatient(Request $request, PaginatorInterface $paginator)
     {
         $user = new Patient;
         $form =  $this->createForm(PatientType::class, $user);
@@ -54,17 +54,24 @@ class StayController extends AbstractController
 
         if($form->isSubmitted()&& $form->isValid()){
             //Vérifie le numéro de sécu pour être sur qu'il est bien unique.
-            $test = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
-            if($test === null)
+            $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
+            if($patient === null)
             {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
                 return $this->redirectToRoute('newStay', ["id" => $user->getId(), "lastname" => $user->getLastName(), "firstname"=> $user->getFirstName()]);
             } else {
-                return $this->render('user/patient/addPatient.html.twig', [
-                    "form" => $form->createView(),
-                    'error' => True
+                $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy(['activate'=>1], ['id'=>'desc']);
+                $patients = $paginator->paginate(
+                    $donnees,
+                    $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
+                    6//nombre d'élements par page
+                );
+                return $this->render('user/patient/homepage.html.twig', [
+                    'error' => True,
+                    'reactivatedPatient' => $patient,
+                    'patients' => $patients
                 ]);
             }
         }
@@ -80,8 +87,11 @@ class StayController extends AbstractController
     public function delStay($id): Response
     {
         $stay = $this->getDoctrine()->getRepository(Stay::class)->findOneBy(['id' => $id]);
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($stay);
+        $stay->setActivate(0);
+        $stay->setIdBed(null);
+        $this->getDoctrine()->getRepository(AddStay::class)->addLogerStay($stay->getId(), $this->getUser()->getId(), date("Y-m-d H:i:s"), 'suppression');
+        $em= $this->getDoctrine()->getManager();
+        $em->persist($stay);
         $em->flush();
 
         return $this->redirectToRoute('homepageStay');

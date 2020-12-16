@@ -25,17 +25,22 @@
     
     {% include 'composants/searchbarPatient.html.twig' %}
 
-
+    {% if error is defined %}
+        <div class="alert alert-warning text-center">
+            <p>Le numéro de sécurité social entré a déjà été utiliser ultérieurement. Le compte patient concerné a donc été réactiver, à vous de le modifier par la suite.</p>
+            <div>Nom et prénom du compte patient réactivé: <a class="font-weight-bold">{{ reactivatedPatient.lastName }} {{ reactivatedPatient.firstName }}</a> </div>
+        </div>
+    {% endif %}
 
     <div class = "alignCards d-flex flex-wrap">
         {% for patient in patients %}
             <div class="card mx-4 my-4" style="width: 20rem; height: 26rem">
                 <div class="card-body text-center">
                     <h4 class="card-title h3  mb-3">{{ patient.firstName }} {{ patient.lastName }}</h4>
-                    <p class="card-text"><a class ="font-weight-bold">Numéro de sécurité sociale :</a> {{ patient.socialSecurityNumber }}</p>
+                    <p class="card-text"><a class ="font-weight-bold">Numéro de sécurité sociale :</a> <br> {{ patient.socialSecurityNumber }}</p>
                     <a href="{{ path( 'updatePatient',  {'id': patient.id} ) }}" class="btn btn-primary w-100 mb-4"><i class="fas fa-user-edit"></i> Modifier</a>
                     <a href="{{ path( 'staysPatient',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4"><i class="fas fa-history"></i> Historique Séjours</a>
-                    <a href="{{ path( 'newStay',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-info w-100 mb-4"><i class="far fa-calendar-plus"></i> Nouveau Séjours</a>
+                    <a href="{{ path( 'newStay',  {'id': patient.id, 'lastname': patient.lastName, 'firstname': patient.firstName} ) }}" class="btn btn-warning w-100 mb-4"><i class="far fa-calendar-plus"></i> Nouveau Séjours</a>
                     <a href="{{ path( 'delPatient',  {'id': patient.id} ) }}" class="btn btn-danger w-100 mb-2 delete"><i class="fas fa-user-slash"></i> Supprimer</a>
                 </div>
             </div>

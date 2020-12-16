@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href={{asset("../css/form.css")}}">
+    <link rel="stylesheet" href="{{asset("../css/form.css")}}">
 {% endblock %}
 
 
@@ -9,10 +9,6 @@
 
 {% block body %}
     {% include 'composants/header.html.twig' %}
-    
-    {% if error is defined %}
-        <div class="alert alert-danger">Ce patient existe déja...</div>
-    {% endif %}
 
     <div class="d-flex justify-content-center">
         {{ form_start(form, {'attr':{'class':'w-75 d-flex flex-column'}} )}}
