@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\LogUser;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,12 +11,26 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public static function saveLogConnect($user, $em){
+        $staffId=$user->getId();
+        $currentDate =  new DateTime(date("Y-m-d H:i:s"));
+        $action = "connexion";
+
+        $log = new LogUser;
+        $log->setDate($currentDate);
+        $log->setAction($action);
+        $log->setStaffId($staffId);
+
+        $em->persist($log);
+        $em->flush();
+    }
     /**
      * @Route("/", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
+            
             return $this->redirectToRoute('homepagePatient');
         }
 

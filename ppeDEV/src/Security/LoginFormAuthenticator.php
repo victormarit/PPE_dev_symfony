@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Controller\SecurityController;
 use App\Entity\Staff;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -68,10 +69,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         $user = $this->entityManager->getRepository(Staff::class)->findOneBy(['login' => $credentials['login']]);
+        $em = $this->entityManager;
 
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Login could not be found.');
+        }
+        else{
+            $log = SecurityController::saveLogConnect($user, $em);
         }
 
         return $user;
@@ -95,6 +100,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
+
 
         return new RedirectResponse($this->urlGenerator->generate('homepagePatient'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
