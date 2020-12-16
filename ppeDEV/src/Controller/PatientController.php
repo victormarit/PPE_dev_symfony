@@ -31,7 +31,7 @@ class PatientController extends AbstractController
             $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findPatients($_GET['search']);
         }
         else {
-            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy([], ['id'=>'desc']);
+            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy(['activate'=>1], ['id'=>'desc']);
         }
 
         $patients = $paginator->paginate(
@@ -49,7 +49,7 @@ class PatientController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function addPatient(Request $request):Response 
+    public function addPatient(Request $request, PaginatorInterface $paginator):Response
     {
         $user = new Patient;
         $form =  $this->createForm(PatientType::class, $user);
@@ -57,20 +57,33 @@ class PatientController extends AbstractController
         
         if($form->isSubmitted()&& $form->isValid()){
             //Vérifie le numéro de sécu pour être sur qu'il est bien unique. 
-            $test = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
-            if($test === null)
+            $patient = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['socialSecurityNumber' => $user->getSocialSecurityNumber()]);
+            if($patient === null)
             {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
                 $this->loggerPatient($user, 'creation');
-                return $this->redirectToRoute('homepagePatient'); 
+                return $this->redirectToRoute('homepagePatient');
             }
             else
             {
-                return $this->render('user/patient/addPatient.html.twig', [
-                    "form" => $form->createView(),
-                    'error' => True
+                $patient->setActivate(1);
+                $this->loggerPatient($patient, "réactivation");
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($patient);
+                $em->flush();
+
+                $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy(['activate'=>1], ['id'=>'desc']);
+                $patients = $paginator->paginate(
+                    $donnees,
+                    $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
+                    6//nombre d'élements par page
+                );
+                return $this->render('user/patient/homepage.html.twig', [
+                    'error' => True,
+                    'reactivatedPatient' => $patient,
+                    'patients' => $patients
                 ]);
             } 
         }
@@ -126,16 +139,18 @@ class PatientController extends AbstractController
     {
 
         $user = $this->getDoctrine()->getRepository(Patient::class)->findOneBy(['id' => $id]);
-        $stays = $user->getStays();
+        $stays = $this->getDoctrine()->getRepository(Stay::class)->findBy(['activate'=>1, "idPatient" => $user->getId()]);
         if(count($stays)==0){
+            $this->loggerPatient($user, 'suppression');
+            $user->setActivate(0);
             $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
+            $em->persist($user);
             $em->flush();
-               
+
             return $this->redirectToRoute('homepagePatient'); 
         }
         else{
-            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy([], ['id'=>'desc']);
+            $donnees  = $this->getDoctrine()->getRepository(Patient::class)->findBy(['activate'=>1], ['id'=>'desc']);
             $patients = $paginator->paginate(
                 $donnees,
                 $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1

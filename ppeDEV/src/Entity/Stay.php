@@ -51,6 +51,12 @@ class Stay
      */
     private $addStays;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $activate = 1;
+
+
     public function __construct()
     {
         $this->addStays = new ArrayCollection();
@@ -147,6 +153,18 @@ class Stay
                 $addStay->setIdStay(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActivate(): ?bool
+    {
+        return $this->activate;
+    }
+
+    public function setActivate(bool $activate): self
+    {
+        $this->activate = $activate;
 
         return $this;
     }

@@ -54,6 +54,11 @@ class Patient
      */
     private $manages;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $activate = 1;
+
     public function __construct()
     {
         $this->stays = new ArrayCollection();
@@ -181,6 +186,18 @@ class Patient
                 $manage->setIdPatient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActivate(): ?bool
+    {
+        return $this->activate;
+    }
+
+    public function setActivate(bool $activate): self
+    {
+        $this->activate = $activate;
 
         return $this;
     }
