@@ -110,7 +110,7 @@ class HospitalController extends AbstractController
             $request->query->getInt('page', 1), //récupère le numéro de la page en cours et si on en a pas on récupère 1
             10//nombre d'élements par page 
         );
-        return $this->render('admin/hospital/service/showService.html.twig', [
+        return $this->render('admin/hospital/room/manageService.html.twig', [
             'rooms' => $rooms,
             'service' => $name,
             'id' => $id
