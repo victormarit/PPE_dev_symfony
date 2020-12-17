@@ -18,7 +18,7 @@ class AddStayFixtures extends Fixture implements DependentFixtureInterface
         $addStay->setIdStaff($manager->getRepository(Staff::class)->findOneBy(['firstName' => 'Victor']));
         $addStay->setIdStay($manager->getRepository(Stay::class)->findOneBy(['creationDate' => DateTime::createFromFormat("Y-m-d H:i:s", "2020-12-07 10:00:00")]));
         $addStay->setModification(DateTime::createFromFormat('Y-m-d H:i:s', "2020-12-07 11:30:00"));
-
+        $addStay->setAction("creation");
         $manager->persist($addStay);
 
         $manager->flush();

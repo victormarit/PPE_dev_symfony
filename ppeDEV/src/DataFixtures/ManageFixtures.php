@@ -18,7 +18,7 @@ class ManageFixtures extends Fixture implements DependentFixtureInterface
         $manage->setIdPatient($manager->getRepository(Patient::class)->findOneBy(['firstName' => 'Jad']));
         $manage->setIdStaff($manager->getRepository(Staff::class)->findOneBy(['firstName' => 'Victor']));
         $manage->setModification(DateTime::createFromFormat('Y-m-d H:i:s', "2020-12-07 11:00:00"));
-
+        $manage->setAction("creation");
 
         $manager->persist($manage);
 

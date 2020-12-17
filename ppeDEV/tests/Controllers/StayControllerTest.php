@@ -3,6 +3,7 @@
 namespace App\tests;
 
 use App\Entity\Patient;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class StayControllerTest extends WebTestCase
@@ -47,7 +48,7 @@ class StayControllerTest extends WebTestCase
         $container = self::$container;
         $em = $container->get('doctrine.orm.entity_manager');
         /** @var Patient $patient */
-        $patient = $em->getRepository('App:Patient')->findOneBy(['firstName' => 'Jad']);
+        $patient = $em->getRepository('App:Stay')->findOneBy(['creationDate' => DateTime::createFromFormat("Y-m-d H:i:s", "2020-12-07 10:00:00") ]);
         $client->request('GET', '/user/modifierSéjour/'. $patient->getId() .'/{serviceId}');
         $this->assertResponseStatusCodeSame(200);
     }
@@ -56,7 +57,7 @@ class StayControllerTest extends WebTestCase
         $container = self::$container;
         $em = $container->get('doctrine.orm.entity_manager');
         /** @var Patient $patient */
-        $patient = $em->getRepository('App:Patient')->findOneBy(['firstName' => 'Jad']);
+        $patient = $em->getRepository('App:Stay')->findOneBy(['creationDate' => DateTime::createFromFormat("Y-m-d H:i:s", "2020-12-07 10:00:00") ]);
         $client->request('GET', '/user/modifierSéjour/'. $patient->getId() .'/{serviceId}');
         $this->assertResponseStatusCodeSame(200);
     }
@@ -65,7 +66,7 @@ class StayControllerTest extends WebTestCase
         $container = self::$container;
         $em = $container->get('doctrine.orm.entity_manager');
         /** @var Patient $patient */
-        $patient = $em->getRepository('App:Patient')->findOneBy(['firstName' => 'Jad']);
+        $patient = $em->getRepository('App:Stay')->findOneBy(['creationDate' => DateTime::createFromFormat("Y-m-d H:i:s", "2020-12-07 10:00:00") ]);
         $client->request('GET', '/user/modifierSéjour/'. $patient->getId() .'/{serviceId}');
         $this->assertResponseStatusCodeSame(302);
     }
@@ -76,7 +77,7 @@ class StayControllerTest extends WebTestCase
         $container = self::$container;
         $em = $container->get('doctrine.orm.entity_manager');
         /** @var Patient $patient */
-        $patient = $em->getRepository('App:Patient')->findOneBy(['firstName' => 'Jad']);
+        $patient = $em->getRepository('App:Stay')->findOneBy(['creationDate' => DateTime::createFromFormat("Y-m-d H:i:s", "2020-12-07 10:00:00") ]);
         $client->request('GET', '/user/erreurModifierSéjour/'. $patient->getId() .'/{serviceId}/1');
         $this->assertResponseStatusCodeSame(200);
     }
@@ -85,7 +86,7 @@ class StayControllerTest extends WebTestCase
         $container = self::$container;
         $em = $container->get('doctrine.orm.entity_manager');
         /** @var Patient $patient */
-        $patient = $em->getRepository('App:Patient')->findOneBy(['firstName' => 'Jad']);
+        $patient = $em->getRepository('App:Stay')->findOneBy(['creationDate' => DateTime::createFromFormat("Y-m-d H:i:s", "2020-12-07 10:00:00") ]);
         $client->request('GET', '/user/erreurModifierSéjour/'. $patient->getId() .'/{serviceId}/1');
         $this->assertResponseStatusCodeSame(200);
     }
