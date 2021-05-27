@@ -14,6 +14,12 @@ class StatisticsControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
+    public function testGetStatisticsPageNotLoggedIn(){
+        $client = static::createClient();
+        $client->request('GET', '/admin/statistics');
+        $this->assertResponseStatusCodeSame(302);
+    }
+
     public function testGetStatisticsPageRole_Admin(){
         $client = SecurityControllerTest::getAdminClient();
         $client->request('GET', '/admin/statistics');
