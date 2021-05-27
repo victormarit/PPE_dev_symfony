@@ -65,6 +65,24 @@ class StayRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }
 
+    public function findAverageTimeAllBed() : array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+        SELECT AVG(HOUR(TIMEDIFF(leave_date, entry_date))) as averageValue, S.name as serviceName, R.number as roomNumber, B.number as bedNumber
+        FROM stay INNER JOIN bed B ON stay.id_bed_id = B.id
+        INNER JOIN hospital_room R ON B.id_hospital_room_id = R.id
+        INNER JOIN service S ON R.id_service_id = S.id
+        WHERE stay.leave_date IS NOT NULL
+        GROUP BY B.number, R.number, S.name
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+    }
+
     public function findAllStays(): array
     {
         $conn = $this->getEntityManager()->getConnection();
